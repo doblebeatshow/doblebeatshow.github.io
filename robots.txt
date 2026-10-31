@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin.html
 Disallow: /editor.html
 
-Sitemap: https://doblebeatshow.github.io/sitemap.xml
+Sitemap: https://doblebeatshow.es/sitemap.xml
