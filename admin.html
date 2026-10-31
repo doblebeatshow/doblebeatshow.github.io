@@ -29,7 +29,7 @@
   #estado { margin-top: 12px; font-weight: 600; }
   .elegir { display: inline-block; background: #1d1d22; color: #fff; padding: 12px 18px; border-radius: 8px; cursor: pointer; font-weight: 600; }
   .elegir input { display: none; }
-  .video-fila { display: grid; grid-template-columns: 1.6fr 1fr 1fr auto; gap: 8px; margin-bottom: 8px; }
+  .video-fila { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr auto; gap: 8px; margin-bottom: 8px; }
   @media (max-width: 700px) { .fila { grid-template-columns: 80px 1fr; } .fila img { width: 80px; height: 60px; } .video-fila { grid-template-columns: 1fr; } }
 </style>
 </head>
@@ -58,7 +58,7 @@
 
 <h2>Vídeos (YouTube)</h2>
 <div class="caja">
-  <p style="margin-top:0">Sube el vídeo a YouTube (puede ser un Short o un vídeo “no listado”) y pega aquí el enlace.</p>
+  <p style="margin-top:0">Sube el vídeo a YouTube (puede ser un Short o un vídeo “no listado”), pega aquí el enlace y elige dónde se ve: en Galería, en Verbenas o en las dos.</p>
   <div id="videos"></div>
   <button type="button" id="addVideo" class="quitar">+ Añadir vídeo</button>
 </div>
@@ -73,7 +73,7 @@
   var CATEGORIAS = [["boda","Bodas"],["horaloca","Hora Loca"],["fuego","Fuego frío"],["atrezzo","Atrezzo"],["equipo","Equipo"],["verbena","Verbenas"],["empresa","Empresas"],["otros","Otros"]];
   var MAX = 1600;
   var fotos = (window.FOTOS || []).map(function (f) { return { src: f.src, categoria: f.categoria, alt: f.alt || "", url: f.src }; });
-  var videos = (window.VIDEOS || []).map(function (v) { return { youtube: v.youtube, formato: v.formato || "vertical", titulo: v.titulo || "" }; });
+  var videos = (window.VIDEOS || []).map(function (v) { return { youtube: v.youtube, formato: v.formato || "vertical", titulo: v.titulo || "", seccion: v.seccion || "galeria" }; });
   var lista = document.getElementById("lista");
   var cajaVideos = document.getElementById("videos");
   var estado = document.getElementById("estado");
@@ -139,14 +139,19 @@
         var op = document.createElement("option"); op.value = o[0]; op.textContent = o[1]; if (o[0] === v.formato) op.selected = true; s.appendChild(op);
       });
       s.onchange = function () { v.formato = s.value; };
+      var d = document.createElement("select");
+      [["galeria","Solo en Galería"],["verbenas","Solo en Verbenas"],["ambas","Galería y Verbenas"]].forEach(function (o) {
+        var op = document.createElement("option"); op.value = o[0]; op.textContent = o[1]; if (o[0] === v.seccion) op.selected = true; d.appendChild(op);
+      });
+      d.onchange = function () { v.seccion = d.value; };
       var q = document.createElement("button"); q.className = "quitar"; q.type = "button"; q.textContent = "Quitar";
       q.onclick = function () { videos.splice(i, 1); pintarVideos(); };
-      fila.appendChild(u); fila.appendChild(t); fila.appendChild(s); fila.appendChild(q);
+      fila.appendChild(u); fila.appendChild(t); fila.appendChild(s); fila.appendChild(d); fila.appendChild(q);
       cajaVideos.appendChild(fila);
     });
   }
 
-  document.getElementById("addVideo").onclick = function () { videos.push({ youtube: "", formato: "vertical", titulo: "" }); pintarVideos(); };
+  document.getElementById("addVideo").onclick = function () { videos.push({ youtube: "", formato: "vertical", titulo: "", seccion: "galeria" }); pintarVideos(); };
 
   document.getElementById("entrada").addEventListener("change", function (e) {
     Array.prototype.forEach.call(e.target.files, function (file) {
@@ -203,7 +208,7 @@
       await new Promise(function (r) { setTimeout(r, 350); });
       var vs = videos.filter(function (v) { return v.youtube; });
       var jv = "window.VIDEOS = [\n" + vs.map(function (v) {
-        return "  { youtube: " + txt(v.youtube) + ", formato: " + txt(v.formato) + ", titulo: " + txt(v.titulo) + " }";
+        return "  { youtube: " + txt(v.youtube) + ", formato: " + txt(v.formato) + ", titulo: " + txt(v.titulo) + ", seccion: " + txt(v.seccion) + " }";
       }).join(",\n") + "\n];\n";
       descargar(new Blob([jv], { type: "text/javascript" }), "videos.js");
       estado.textContent = "Listo: " + nuevas.length + " foto(s) nuevas + fotos.js + videos.js en tu carpeta de Descargas. Si el navegador pregunta, permite descargas múltiples.";

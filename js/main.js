@@ -135,9 +135,12 @@
     pintar(null);
   }
 
-  var cajaVideos = document.getElementById("videos");
-  if (cajaVideos) {
-    var lista = window.VIDEOS || [];
+  document.querySelectorAll("[data-videos]").forEach(function (cajaVideos) {
+    var donde = cajaVideos.getAttribute("data-videos");
+    var lista = (window.VIDEOS || []).filter(function (v) {
+      var s = v.seccion || "galeria";
+      return s === donde || s === "ambas";
+    });
     var idYoutube = function (url) {
       var m = String(url).match(/(?:youtu\.be\/|v=|shorts\/|embed\/)([\w-]{11})/);
       return m ? m[1] : (/^[\w-]{11}$/.test(url) ? url : null);
@@ -162,8 +165,12 @@
       });
       cajaVideos.appendChild(b);
     });
-    if (!cajaVideos.children.length) cajaVideos.hidden = true;
-  }
+    if (!cajaVideos.children.length) {
+      cajaVideos.hidden = true;
+      var sec = cajaVideos.closest("[data-si-videos]");
+      if (sec) sec.hidden = true;
+    }
+  });
 
   var parsearGoogle = function (url) {
     if (!url) return null;
