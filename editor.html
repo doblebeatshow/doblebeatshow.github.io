@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Editor de la web | Doblebeat Show</title>
+<style>
+  :root { --rosa: #ff1875; --oscuro: #15151a; --linea: #e3e3ea; }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #1d1d22; background: #f4f4f7; display: flex; flex-direction: column; }
+  header { background: var(--oscuro); color: #fff; padding: 10px 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  header h1 { font-size: 1rem; margin: 0 12px 0 0; }
+  header h1 b { color: var(--rosa); }
+  select, input, button { font: inherit; }
+  header select { padding: 8px 10px; border-radius: 8px; border: 0; min-width: 230px; }
+  button { border: 0; border-radius: 8px; padding: 9px 14px; cursor: pointer; font-weight: 600; }
+  .rosa { background: var(--rosa); color: #fff; }
+  .gris { background: #2c2c34; color: #fff; }
+  .claro { background: #fff; color: #1d1d22; border: 1px solid var(--linea); }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  .hueco { flex: 1; }
+  #estado { font-size: .85rem; color: #c9c9d3; }
+  #estado.pendiente { color: #ffd23f; }
+  #estado.ok { color: #6ee7a8; }
+  .seo { display: none; gap: 12px; padding: 12px 16px; background: #fff; border-bottom: 1px solid var(--linea); flex-wrap: wrap; }
+  .seo.visible { display: flex; }
+  .seo label { display: flex; flex-direction: column; gap: 4px; font-size: .78rem; font-weight: 600; flex: 1 1 340px; }
+  .seo input, .seo textarea { padding: 8px 10px; border: 1px solid #cfcfd8; border-radius: 6px; font: 400 .92rem system-ui, sans-serif; }
+  .seo textarea { resize: vertical; min-height: 40px; }
+  .seo small { font-weight: 400; color: #777; }
+  .seo small.largo { color: #d4005a; }
+  main { flex: 1; position: relative; }
+  iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #08080a; }
+  .portada { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; overflow: auto; }
+  .tarjeta { background: #fff; border-radius: 16px; padding: 30px; max-width: 640px; box-shadow: 0 10px 40px rgba(0,0,0,.08); line-height: 1.6; }
+  .tarjeta h2 { margin-top: 0; }
+  .tarjeta ol { padding-left: 20px; }
+  .tarjeta .rosa { padding: 13px 22px; font-size: 1rem; margin-top: 8px; }
+  .aviso { background: #fff4f8; border-left: 4px solid var(--rosa); padding: 12px 14px; border-radius: 8px; font-size: .92rem; }
+  dialog { border: 0; border-radius: 16px; padding: 24px; max-width: 460px; box-shadow: 0 20px 60px rgba(0,0,0,.3); }
+  dialog::backdrop { background: rgba(0,0,0,.55); }
+  dialog h3 { margin: 0 0 8px; }
+  dialog img { width: 100%; max-height: 220px; object-fit: contain; background: #111; border-radius: 10px; margin: 10px 0; }
+  dialog .botones { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+  dialog .botones button { text-align: left; padding: 12px 14px; }
+  dialog .botones small { display: block; font-weight: 400; opacity: .85; margin-top: 2px; }
+  #toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1d1d22; color: #fff; padding: 12px 18px; border-radius: 10px; font-size: .92rem; display: none; z-index: 9; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Editor <b>Doblebeat Show</b></h1>
+  <select id="pagina" disabled aria-label="Página a editar"></select>
+  <button class="gris" id="verSeo" disabled>Título para Google</button>
+  <span class="hueco"></span>
+  <span id="estado"></span>
+  <button class="claro" id="descartar" disabled>Descartar cambios</button>
+  <button class="rosa" id="guardar" disabled>Guardar</button>
+</header>
+
+<div class="seo" id="seo">
+  <label>Título en Google <small id="cuentaT"></small><input id="seoTitulo"></label>
+  <label>Descripción en Google <small id="cuentaD"></small><textarea id="seoDesc" rows="2"></textarea></label>
+</div>
+
+<main>
+  <div class="portada" id="inicio">
+    <div class="tarjeta">
+      <h2>Editor visual de la web</h2>
+      <p>Cambia textos, títulos y fotos directamente sobre la página, y guarda.</p>
+      <ol>
+        <li>Pulsa <b>Abrir carpeta de la web</b> y elige la carpeta donde está la web (la que contiene <code>index.html</code>). El navegador te pedirá permiso para guardar cambios: acéptalo.</li>
+        <li>Elige la página en el desplegable de arriba.</li>
+        <li><b>Textos:</b> haz clic en cualquier título o párrafo y escribe.</li>
+        <li><b>Fotos:</b> haz clic en una foto y elige la nueva. Puedes cambiarla solo en ese sitio o en toda la web.</li>
+        <li><b>Título para Google:</b> cambia lo que sale en los resultados de búsqueda.</li>
+        <li>Pulsa <b>Guardar</b> y sube los cambios a GitHub.</li>
+      </ol>
+      <p class="aviso" id="compat">Funciona en <b>Google Chrome</b> o <b>Microsoft Edge</b> de ordenador. Safari y Firefox no permiten guardar en la carpeta.</p>
+      <button class="rosa" id="abrir">Abrir carpeta de la web</button>
+      <p style="font-size:.88rem;color:#666;margin-bottom:0">Para la galería de fotos y los vídeos usa <code>admin.html</code>.</p>
+    </div>
+  </div>
+  <iframe id="marco" title="Vista editable" hidden></iframe>
+</main>
+
+<dialog id="dialogo">
+  <h3>Cambiar foto</h3>
+  <img id="dlgPrevia" alt="">
+  <div id="dlgInfo" style="font-size:.88rem;color:#555"></div>
+  <div class="botones">
+    <button class="rosa" data-modo="solo">Solo en este sitio<small>La foto nueva aparece solo aquí. El resto de la web no cambia.</small></button>
+    <button class="gris" data-modo="todas">En toda la web<small id="dlgTodas">Se cambia en todos los sitios donde aparece esta foto.</small></button>
+    <button class="claro" data-modo="cancelar">Cancelar</button>
+  </div>
+</dialog>
+
+<input type="file" id="selectorFoto" accept="image/*" hidden>
+<div id="toast"></div>
+
+<script>
+(function () {
+  var PAGINAS = [
+    ["index.html", "Inicio"],
+    ["dj-bodas-ciudad-real/index.html", "DJ bodas Ciudad Real"],
+    ["dj-bodas-toledo/index.html", "DJ bodas Toledo"],
+    ["dj-bodas-cuenca/index.html", "DJ bodas Cuenca"],
+    ["dj-bodas-albacete/index.html", "DJ bodas Albacete"],
+    ["dj-bodas-tomelloso/index.html", "DJ bodas Tomelloso"],
+    ["verbenas/index.html", "Verbenas"],
+    ["eventos-privados/index.html", "Eventos privados"],
+    ["empresas/index.html", "Empresas"],
+    ["privacidad/index.html", "Aviso legal y privacidad"],
+    ["404.html", "Página de error 404"]
+  ];
+  var TEXTOS = "h1,h2,h3,h4,p,li,summary,figcaption,figcaption strong,figcaption span,label,blockquote,.antetitulo,.rol,.etiqueta,.dato span,.extra strong,.extra span,.via small,.via b,.mas,.btn,.sellos li";
+  var MAX = 1600;
+
+  var raizDir = null, ruta = null, carpeta = "", doc = null, sucio = false, blobs = [], imgPendiente = null, archivoPendiente = null, usos = {};
+  var $ = function (id) { return document.getElementById(id); };
+  var marco = $("marco"), selPag = $("pagina"), estado = $("estado");
+
+  if (!window.showDirectoryPicker) {
+    $("abrir").disabled = true;
+    $("compat").innerHTML = "<b>Este navegador no es compatible.</b> Abre este archivo con Google Chrome o Microsoft Edge en un ordenador.";
+  }
+
+  function toast(t) {
+    var el = $("toast"); el.textContent = t; el.style.display = "block";
+    clearTimeout(toast.t); toast.t = setTimeout(function () { el.style.display = "none"; }, 3200);
+  }
+  function marcar(s) {
+    sucio = s;
+    $("guardar").disabled = !s;
+    $("descartar").disabled = !s;
+    estado.className = s ? "pendiente" : "ok";
+    estado.textContent = s ? "Cambios sin guardar" : "Todo guardado";
+  }
+  window.addEventListener("beforeunload", function (e) { if (sucio) { e.preventDefault(); e.returnValue = ""; } });
+
+  function partes(p) { return p.split("/").filter(Boolean); }
+  function resolver(base, rel) {
+    if (/^(https?:|data:|blob:|\/\/)/.test(rel)) return null;
+    var out = rel.charAt(0) === "/" ? [] : partes(base);
+    rel.split("?")[0].split("/").forEach(function (s) {
+      if (s === "..") out.pop(); else if (s && s !== ".") out.push(s);
+    });
+    return out.join("/");
+  }
+  function relativa(dirDesde, hasta) {
+    var a = partes(dirDesde), b = partes(hasta);
+    while (a.length && b.length > 1 && a[0] === b[0]) { a.shift(); b.shift(); }
+    return a.map(function () { return ".."; }).concat(b).join("/");
+  }
+  async function archivo(path, crear) {
+    var ps = partes(path), d = raizDir;
+    for (var i = 0; i < ps.length - 1; i++) d = await d.getDirectoryHandle(ps[i], { create: !!crear });
+    return d.getFileHandle(ps[ps.length - 1], { create: !!crear });
+  }
+  async function leerTexto(path) { return (await (await archivo(path)).getFile()).text(); }
+  async function leerBlob(path) { return (await archivo(path)).getFile(); }
+  async function escribir(path, datos) {
+    var h = await archivo(path, true);
+    var w = await h.createWritable();
+    await w.write(datos);
+    await w.close();
+  }
+  function urlBlob(b) { var u = URL.createObjectURL(b); blobs.push(u); return u; }
+
+  $("abrir").onclick = async function () {
+    try {
+      var d = await window.showDirectoryPicker({ mode: "readwrite" });
+      try { await d.getFileHandle("index.html"); await d.getDirectoryHandle("css"); }
+      catch (e) { alert("Esa carpeta no parece la de la web. Elige la carpeta que contiene index.html, css, img y js."); return; }
+      raizDir = d;
+      selPag.innerHTML = "";
+      PAGINAS.forEach(function (p) { var o = document.createElement("option"); o.value = p[0]; o.textContent = p[1]; selPag.appendChild(o); });
+      selPag.disabled = false;
+      $("verSeo").disabled = false;
+      await contarUsos();
+      await cargar("index.html");
+    } catch (e) {
+      if (e.name !== "AbortError") alert("No se pudo abrir la carpeta: " + e.message);
+    }
+  };
+
+  selPag.onchange = async function () {
+    if (sucio && !confirm("Tienes cambios sin guardar en esta página. ¿Salir sin guardar?")) { selPag.value = ruta; return; }
+    await cargar(selPag.value);
+  };
+  $("descartar").onclick = function () { if (confirm("¿Descartar los cambios de esta página?")) cargar(ruta); };
+  $("verSeo").onclick = function () { $("seo").classList.toggle("visible"); };
+
+  async function contarUsos() {
+    usos = {};
+    for (var i = 0; i < PAGINAS.length; i++) {
+      var p = PAGINAS[i][0];
+      var base = p.split("/").slice(0, -1).join("/");
+      var t; try { t = await leerTexto(p); } catch (e) { continue; }
+      var re = /<img[^>]+src="([^"]+)"/g, m;
+      while ((m = re.exec(t))) {
+        var abs = resolver(base, m[1]);
+        if (!abs) continue;
+        usos[abs] = usos[abs] || {};
+        usos[abs][p] = (usos[abs][p] || 0) + 1;
+      }
+    }
+  }
+
+  async function cargar(p) {
+    blobs.forEach(URL.revokeObjectURL); blobs = [];
+    ruta = p;
+    carpeta = p.split("/").slice(0, -1).join("/");
+    selPag.value = p;
+    var html = await leerTexto(p);
+    var css = "";
+    try {
+      css = await leerTexto("css/estilo.css");
+      var urls = css.match(/url\("?\.\.\/img\/[^")]+"?\)/g) || [];
+      for (var i = 0; i < urls.length; i++) {
+        var f = urls[i].replace(/url\("?\.\.\//, "").replace(/"?\)$/, "");
+        try { css = css.split(urls[i]).join('url("' + urlBlob(await leerBlob(f)) + '")'); } catch (e) {}
+      }
+    } catch (e) {}
+
+    var parser = new DOMParser();
+    var d = parser.parseFromString(html, "text/html");
+    d.querySelectorAll("script:not([type='application/ld+json'])").forEach(function (s) {
+      s.setAttribute("data-ed-tipo", s.getAttribute("type") || "");
+      s.setAttribute("type", "text/x-desactivado");
+    });
+    d.querySelectorAll("link[rel=stylesheet][href*='estilo.css']").forEach(function (l) { l.setAttribute("data-ed-href", l.getAttribute("href")); l.removeAttribute("href"); });
+    d.querySelectorAll("iframe").forEach(function (f) { f.setAttribute("data-ed-iframe", f.getAttribute("src") || ""); f.removeAttribute("src"); });
+    var imgs = d.querySelectorAll("img[src]");
+    for (var j = 0; j < imgs.length; j++) {
+      var im = imgs[j], src = im.getAttribute("src"), abs = resolver(carpeta, src);
+      im.setAttribute("data-ed-src", src);
+      if (abs) { try { im.setAttribute("src", urlBlob(await leerBlob(abs))); } catch (e) {} }
+    }
+    var estilo = d.createElement("style");
+    estilo.id = "ed-css";
+    estilo.textContent = css +
+      "\n.aparece{opacity:1!important;transform:none!important}" +
+      "[data-ed-texto]{outline:1px dashed transparent;outline-offset:3px;border-radius:3px;cursor:text}" +
+      "[data-ed-texto]:hover{outline-color:rgba(255,24,117,.7)}" +
+      "[data-ed-texto]:focus{outline:2px solid #ff1875;background:rgba(255,24,117,.08)}" +
+      "img[data-ed-foto]{cursor:pointer}" +
+      "img[data-ed-foto]:hover{outline:4px solid #ff1875;outline-offset:-4px;filter:brightness(1.08)}" +
+      ".collage figure{pointer-events:auto}" +
+      ".barra-movil{display:none!important}" +
+      ".cabecera{position:relative!important}";
+    d.head.appendChild(estilo);
+
+    marco.hidden = false;
+    $("inicio").hidden = true;
+    var listo = new Promise(function (r) { marco.onload = r; });
+    marco.srcdoc = "<!doctype html>" + d.documentElement.outerHTML;
+    await listo;
+    doc = marco.contentDocument;
+    activar();
+    $("seoTitulo").value = doc.title;
+    var md = doc.querySelector("meta[name=description]");
+    $("seoDesc").value = md ? md.content : "";
+    contar();
+    marcar(false);
+    estado.textContent = "Editando: " + selPag.options[selPag.selectedIndex].text;
+    estado.className = "";
+  }
+
+  function activar() {
+    doc.querySelectorAll(TEXTOS).forEach(function (el) {
+      if (el.closest("[data-ed-texto]") || el.closest("select") || el.closest(".marca") || el.closest(".trampa") || el.closest(".legal") || el.closest(".saltar")) return;
+      if (el.tagName === "FIGCAPTION" && el.children.length) return;
+      if (!el.textContent.trim()) return;
+      el.setAttribute("contenteditable", "true");
+      el.setAttribute("spellcheck", "true");
+      el.setAttribute("data-ed-texto", "");
+    });
+    doc.querySelectorAll("details").forEach(function (d) { d.open = true; });
+    doc.querySelectorAll("img[data-ed-src]").forEach(function (im) {
+      if (im.closest(".marca") || im.closest(".pie") || /logo/.test(im.getAttribute("data-ed-src"))) return;
+      im.setAttribute("data-ed-foto", "");
+    });
+    doc.addEventListener("click", function (e) {
+      if (e.target.closest("a, button, summary")) e.preventDefault();
+      var im = e.target.closest("img[data-ed-foto]") || (e.target.closest("figure") && e.target.closest("figure").querySelector("img[data-ed-foto]"));
+      if (im && !e.target.closest("[data-ed-texto]")) {
+        e.preventDefault();
+        imgPendiente = im;
+        $("selectorFoto").value = "";
+        $("selectorFoto").click();
+      }
+    }, true);
+    doc.addEventListener("submit", function (e) { e.preventDefault(); }, true);
+    doc.addEventListener("input", function () { marcar(true); });
+    doc.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" && e.target.closest && e.target.closest("[data-ed-texto]")) e.preventDefault();
+      if (e.key === " " && e.target.closest && e.target.closest("summary[data-ed-texto], .btn[data-ed-texto], button")) { e.preventDefault(); doc.execCommand("insertText", false, " "); }
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") { e.preventDefault(); guardar(); }
+    });
+    doc.addEventListener("paste", function (e) {
+      if (!e.target.closest || !e.target.closest("[data-ed-texto]")) return;
+      e.preventDefault();
+      var t = (e.clipboardData || window.clipboardData).getData("text/plain").replace(/\s*\n\s*/g, " ");
+      doc.execCommand("insertText", false, t);
+    });
+  }
+  document.addEventListener("keydown", function (e) {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") { e.preventDefault(); guardar(); }
+  });
+
+  $("seoTitulo").oninput = function () { contar(); marcar(true); };
+  $("seoDesc").oninput = function () { contar(); marcar(true); };
+  function contar() {
+    var t = $("seoTitulo").value.length, d = $("seoDesc").value.length;
+    $("cuentaT").textContent = t + " caracteres (ideal: hasta 60)";
+    $("cuentaT").className = t > 60 ? "largo" : "";
+    $("cuentaD").textContent = d + " caracteres (ideal: 120-160)";
+    $("cuentaD").className = d > 160 ? "largo" : "";
+  }
+
+  $("selectorFoto").onchange = function () {
+    var f = this.files[0];
+    if (!f || !imgPendiente) return;
+    archivoPendiente = f;
+    var abs = resolver(carpeta, imgPendiente.getAttribute("data-ed-src"));
+    var paginas = abs && usos[abs] ? Object.keys(usos[abs]) : [ruta];
+    var veces = paginas.reduce(function (n, p) { return n + usos[abs][p]; }, 0) || 1;
+    $("dlgPrevia").src = URL.createObjectURL(f);
+    $("dlgInfo").textContent = "Foto actual: " + (abs || "") + ". Aparece " + veces + (veces === 1 ? " vez" : " veces") + " en " + paginas.length + (paginas.length === 1 ? " página." : " páginas.");
+    $("dlgTodas").textContent = veces > 1 ? "Se cambia en los " + veces + " sitios donde aparece esta foto, en todas las páginas." : "Sustituye el archivo de la foto. Solo aparece aquí.";
+    $("dialogo").showModal();
+  };
+
+  $("dialogo").addEventListener("click", async function (e) {
+    var b = e.target.closest("button[data-modo]");
+    if (!b) return;
+    var modo = b.getAttribute("data-modo");
+    $("dialogo").close();
+    if (modo === "cancelar") { imgPendiente = null; return; }
+    try {
+      var r = await aJpg(archivoPendiente);
+      var actual = resolver(carpeta, imgPendiente.getAttribute("data-ed-src"));
+      if (modo === "todas" && actual && /\.(jpe?g)$/i.test(actual)) {
+        await escribir(actual, r.blob);
+        doc.querySelectorAll("img[data-ed-src]").forEach(function (im) {
+          if (resolver(carpeta, im.getAttribute("data-ed-src")) === actual) {
+            im.src = urlBlob(r.blob);
+            im.setAttribute("width", r.w); im.setAttribute("height", r.h);
+            im.setAttribute("data-ed-dim", "1");
+          }
+        });
+        toast(sucio ? "Foto cambiada en toda la web. Guarda la página para conservar el resto de cambios." : "Foto cambiada en toda la web. Ya está guardada.");
+      } else {
+        var nombre = "img/editadas/" + new Date().toISOString().replace(/[-:T.Z]/g, "").slice(0, 14) + "-" + Math.random().toString(36).slice(2, 6) + ".jpg";
+        await escribir(nombre, r.blob);
+        imgPendiente.src = urlBlob(r.blob);
+        imgPendiente.setAttribute("data-ed-src", relativa(carpeta, nombre));
+        imgPendiente.setAttribute("width", r.w); imgPendiente.setAttribute("height", r.h);
+        marcar(true);
+        toast("Foto cambiada en este sitio. Pulsa Guardar.");
+      }
+    } catch (err) {
+      alert("No se pudo cambiar la foto: " + err.message);
+    }
+    imgPendiente = null;
+  });
+
+  function aJpg(file) {
+    return new Promise(function (ok, ko) {
+      var img = new Image();
+      img.onload = function () {
+        var k = Math.min(1, MAX / Math.max(img.naturalWidth, img.naturalHeight));
+        var c = document.createElement("canvas");
+        c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+        c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+        c.toBlob(function (b) { b ? ok({ blob: b, w: c.width, h: c.height }) : ko(new Error("no se pudo convertir")); }, "image/jpeg", 0.8);
+      };
+      img.onerror = function () { ko(new Error("el navegador no puede leer " + file.name + ". Si es HEIC, expórtala antes a JPG.")); };
+      img.src = URL.createObjectURL(file);
+    });
+  }
+
+  $("guardar").onclick = guardar;
+  async function guardar() {
+    if (!doc || !sucio) return;
+    var c = doc.documentElement.cloneNode(true);
+    var q = function (s) { return c.querySelectorAll(s); };
+    q("#ed-css").forEach(function (n) { n.remove(); });
+    q("[data-ed-texto]").forEach(function (n) { n.removeAttribute("contenteditable"); n.removeAttribute("spellcheck"); n.removeAttribute("data-ed-texto"); });
+    q("[data-ed-foto]").forEach(function (n) { n.removeAttribute("data-ed-foto"); });
+    q("[data-ed-dim]").forEach(function (n) { n.removeAttribute("data-ed-dim"); });
+    q("img[data-ed-src]").forEach(function (n) { n.setAttribute("src", n.getAttribute("data-ed-src")); n.removeAttribute("data-ed-src"); });
+    q("script[data-ed-tipo]").forEach(function (n) {
+      var t = n.getAttribute("data-ed-tipo");
+      if (t) n.setAttribute("type", t); else n.removeAttribute("type");
+      n.removeAttribute("data-ed-tipo");
+    });
+    q("link[data-ed-href]").forEach(function (n) { n.setAttribute("href", n.getAttribute("data-ed-href")); n.removeAttribute("data-ed-href"); });
+    q("iframe[data-ed-iframe]").forEach(function (n) { n.setAttribute("src", n.getAttribute("data-ed-iframe")); n.removeAttribute("data-ed-iframe"); });
+    q("details[open]").forEach(function (n) { n.removeAttribute("open"); });
+    q("[style='']").forEach(function (n) { n.removeAttribute("style"); });
+    q(".visible").forEach(function (n) { if (n.classList.contains("aparece") && !n.closest(".portada, .portada-interior")) n.classList.remove("visible"); });
+
+    var tit = $("seoTitulo").value.trim(), des = $("seoDesc").value.trim();
+    var t = c.querySelector("title"); if (t && tit) t.textContent = tit;
+    var set = function (sel, v) { var m = c.querySelector(sel); if (m && v) m.setAttribute("content", v); };
+    set("meta[name=description]", des);
+    set("meta[property='og:title']", tit);
+    set("meta[property='og:description']", des);
+
+    var html = "<!doctype html>\n" + c.outerHTML + "\n";
+    try {
+      await escribir(ruta, html);
+      marcar(false);
+      toast("Guardado. Ahora sube los cambios a GitHub.");
+      await contarUsos();
+    } catch (e) {
+      alert("No se pudo guardar: " + e.message);
+    }
+  }
+})();
+</script>
+</body>
+</html>
