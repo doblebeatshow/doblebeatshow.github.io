@@ -180,6 +180,7 @@ p { margin: 0 0 1em; }
 .collage .c3 { width: 46%; height: 50%; right: 4%; bottom: 0; transform: rotate(-2deg); z-index: 3; border-color: var(--rosa); box-shadow: 0 0 50px var(--rosa-glow); }
 .portada-movil { display: none; }
 
+main { overflow-x: clip; }
 .cinta {
   background: var(--rosa);
   color: var(--blanco);
@@ -366,6 +367,7 @@ p { margin: 0 0 1em; }
 .evento h3 { margin-bottom: .2em; }
 .evento p { color: var(--suave); font-size: .95rem; }
 .evento .mas { color: var(--rosa); font-weight: 600; font-size: .92rem; }
+.eventos.cuatro { grid-template-columns: repeat(4, 1fr); }
 
 .opiniones {
   display: grid;
@@ -597,10 +599,16 @@ p { margin: 0 0 1em; }
   .portada .contenedor, .dupla, .contacto, .portada-interior .contenedor { grid-template-columns: 1fr; }
   .collage { height: 520px; max-width: 560px; margin: 0 auto; width: 100%; }
   .datos { grid-template-columns: 1fr 1fr; }
-  .eventos { grid-template-columns: 1fr 1fr; }
+  .eventos, .eventos.cuatro { grid-template-columns: 1fr 1fr; }
   .pie .contenedor { grid-template-columns: 1fr 1fr; }
   .portada-interior .foto { max-width: 420px; margin: 0 auto; }
   .opiniones { grid-template-columns: 1fr; text-align: center; }
+}
+
+@media (max-width: 1180px) {
+  .menu { gap: 14px; }
+  .menu a { font-size: .84rem; white-space: nowrap; }
+  .menu .btn { padding: 10px 14px; }
 }
 
 @media (max-width: 860px) {
@@ -666,6 +674,9 @@ p { margin: 0 0 1em; }
   .datos { gap: 10px; }
   .dato { padding: 22px 8px; }
   .eventos { grid-template-columns: 1fr; }
+  .eventos.cuatro { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .eventos.cuatro .evento div { padding: 14px; }
+  .eventos.cuatro .evento p { display: none; }
   .equipo, .campos { grid-template-columns: 1fr; }
   .pasos li { grid-template-columns: 1fr; gap: 12px; padding: 20px; }
   .pie .contenedor { grid-template-columns: 1fr; }
