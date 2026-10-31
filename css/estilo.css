@@ -396,15 +396,21 @@ main { overflow-x: clip; }
 .resena header div { flex: 1; line-height: 1.25; }
 .resena header small { display: block; color: var(--suave); font-size: .8rem; }
 .resena .avatar { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: var(--rosa); color: var(--blanco); font-weight: 700; }
-.resena .estrellas { color: #f5b301; letter-spacing: 2px; font-size: .9rem; }
+.resena .estrellas { color: #f5b301; letter-spacing: 2px; font-size: .8rem; margin-left: 4px; }
 .resena h3 { font: 600 1.05rem/1.35 Poppins, system-ui, sans-serif; letter-spacing: 0; text-transform: none; margin: 0 0 8px; color: var(--blanco); }
+.resena .destacado { color: var(--blanco); font-weight: 700; font-size: 1rem; line-height: 1.4; margin: 0 0 12px; padding-left: 12px; border-left: 3px solid var(--rosa); }
 .resena blockquote { margin: 0 0 14px; flex: 1; }
-.resena blockquote p { color: var(--texto); font-size: .95rem; display: -webkit-box; -webkit-line-clamp: 7; -webkit-box-orient: vertical; overflow: hidden; }
+.resena blockquote p { color: var(--texto); font-size: .95rem; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; }
 .resena.abierta blockquote p { -webkit-line-clamp: unset; display: block; }
 .resena footer { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: .85rem; }
 .resena .leer-mas { background: none; border: 0; padding: 0; color: var(--rosa); font: inherit; font-weight: 600; cursor: pointer; }
 .resena .leer-mas[hidden] { display: none; }
 .resena footer a { color: var(--suave); }
+.resena blockquote strong { color: var(--blanco); font-weight: 700; background: linear-gradient(transparent 62%, rgba(255, 24, 117, .35) 62%); }
+dialog.captura { border: 0; padding: 0; background: transparent; max-width: min(680px, 94vw); }
+dialog.captura::backdrop { background: rgba(0, 0, 0, .85); }
+dialog.captura img { display: block; width: 100%; height: auto; border-radius: 12px; }
+dialog.captura .cerrar { position: absolute; top: 6px; right: 6px; width: 38px; height: 38px; border: 0; border-radius: 50%; background: var(--rosa); color: #fff; font-size: 1.5rem; line-height: 1; cursor: pointer; }
 .aftermovie { max-width: 360px; margin: 0 auto 40px; border-radius: 18px; overflow: hidden; border: 3px solid var(--blanco); box-shadow: 0 0 60px var(--rosa-glow); }
 .aftermovie video { display: block; width: 100%; height: auto; aspect-ratio: 9 / 16; background: #000; }
 

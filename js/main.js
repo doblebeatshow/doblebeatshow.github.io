@@ -55,6 +55,21 @@
     });
   });
 
+  document.querySelectorAll("dialog.captura").forEach(function (dlg) {
+    if (typeof dlg.showModal !== "function") return;
+    var img = dlg.querySelector("img");
+    dlg.parentNode.querySelectorAll("a.ver-captura").forEach(function (a) {
+      a.addEventListener("click", function (e) {
+        e.preventDefault();
+        img.src = a.getAttribute("href");
+        img.alt = a.closest(".resena").querySelector("h3").textContent;
+        dlg.showModal();
+      });
+    });
+    dlg.querySelector(".cerrar").addEventListener("click", function () { dlg.close(); });
+    dlg.addEventListener("click", function (e) { if (e.target === dlg) dlg.close(); });
+  });
+
   var contadores = document.querySelectorAll("[data-contar]");
   if ("IntersectionObserver" in window && !reducir) {
     var obsC = new IntersectionObserver(function (entradas) {
