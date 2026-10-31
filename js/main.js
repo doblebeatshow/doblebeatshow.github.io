@@ -36,6 +36,25 @@
     animables.forEach(function (el) { el.classList.add("visible"); });
   }
 
+  document.querySelectorAll("video.video-auto[data-src]").forEach(function (v) {
+    if (!v.offsetParent) return;
+    v.src = v.getAttribute("data-src");
+    if (reducir) return;
+    var p = v.play();
+    if (p && p.catch) p.catch(function () {});
+  });
+
+  document.querySelectorAll(".resena").forEach(function (r) {
+    var p = r.querySelector("blockquote p");
+    var b = r.querySelector(".leer-mas");
+    if (!p || !b || p.scrollHeight <= p.clientHeight + 2) return;
+    b.hidden = false;
+    b.addEventListener("click", function () {
+      var abierta = r.classList.toggle("abierta");
+      b.textContent = abierta ? "Leer menos" : "Leer completa";
+    });
+  });
+
   var contadores = document.querySelectorAll("[data-contar]");
   if ("IntersectionObserver" in window && !reducir) {
     var obsC = new IntersectionObserver(function (entradas) {
@@ -190,13 +209,18 @@
   document.querySelectorAll("[data-servicio]").forEach(function (a) {
     a.addEventListener("click", function () {
       var sel = document.getElementById("f-servicio");
-      if (sel) sel.value = a.getAttribute("data-servicio");
+      if (sel) {
+        sel.value = a.getAttribute("data-servicio");
+        var det = sel.closest("details");
+        if (det) det.open = true;
+      }
     });
   });
 
   document.querySelectorAll("form.form-presupuesto").forEach(function (form) {
     var aviso = form.querySelector(".mensaje-form");
     var boton = form.querySelector("button[type=submit]");
+    var textoBoton = boton.textContent;
     var fecha = form.querySelector("[name=fecha]");
     if (fecha) fecha.min = new Date().toISOString().slice(0, 10);
 
@@ -263,7 +287,7 @@
         })
         .then(function () {
           boton.disabled = false;
-          boton.textContent = "Pedir presupuesto";
+          boton.textContent = textoBoton;
         });
     });
   });
