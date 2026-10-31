@@ -1,3 +1,3 @@
 window.VIDEOS = [
-  { youtube: "https://www.youtube.com/watch?v=SnlDphzUO68", formato: "horizontal", titulo: " Propuesta Verbena y Show Musical | Doblebeat Show" }
+  { youtube: "https://youtu.be/SnlDphzUO68", formato: "horizontal", titulo: " Propuesta Verbena y Show Musical | Doblebeat Show", seccion: "ambas" }
 ];
