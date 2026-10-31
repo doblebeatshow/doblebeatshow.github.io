@@ -398,7 +398,6 @@ main { overflow-x: clip; }
 .resena .avatar { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: var(--rosa); color: var(--blanco); font-weight: 700; }
 .resena .estrellas { color: #f5b301; letter-spacing: 2px; font-size: .8rem; margin-left: 4px; }
 .resena h3 { font: 600 1.05rem/1.35 Poppins, system-ui, sans-serif; letter-spacing: 0; text-transform: none; margin: 0 0 8px; color: var(--blanco); }
-.resena .destacado { color: var(--blanco); font-weight: 700; font-size: 1rem; line-height: 1.4; margin: 0 0 12px; padding-left: 12px; border-left: 3px solid var(--rosa); }
 .resena blockquote { margin: 0 0 14px; flex: 1; }
 .resena blockquote p { color: var(--texto); font-size: .95rem; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; }
 .resena.abierta blockquote p { -webkit-line-clamp: unset; display: block; }
