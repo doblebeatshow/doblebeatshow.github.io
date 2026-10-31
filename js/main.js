@@ -272,7 +272,7 @@
 
       var cuerpo = new URLSearchParams();
       Object.keys(google.mapa).forEach(function (token) {
-        if (datos[token] !== undefined) cuerpo.append(google.mapa[token], datos[token] || "");
+        if (datos[token] !== undefined) cuerpo.append(google.mapa[token], datos[token] || "-");
       });
       boton.disabled = true;
       boton.textContent = "Enviando...";
