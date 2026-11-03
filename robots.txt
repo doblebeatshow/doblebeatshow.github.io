@@ -3,4 +3,19 @@ Allow: /
 Disallow: /admin.html
 Disallow: /editor.html
 
+User-agent: GPTBot
+Allow: /
+Disallow: /admin.html
+Disallow: /editor.html
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin.html
+Disallow: /editor.html
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin.html
+Disallow: /editor.html
+
 Sitemap: https://doblebeatshow.es/sitemap.xml

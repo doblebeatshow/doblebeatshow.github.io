@@ -185,7 +185,7 @@
       var b = document.createElement("button");
       b.type = "button";
       b.className = "video" + (v.formato === "horizontal" ? " horizontal" : "");
-      b.style.backgroundImage = "url(https://i.ytimg.com/vi/" + id + "/hqdefault.jpg)";
+      b.style.backgroundImage = "url(https://i.ytimg.com/vi_webp/" + id + "/hqdefault.webp)";
       b.setAttribute("aria-label", "Reproducir vídeo: " + (v.titulo || "Doblebeat Show"));
       b.addEventListener("click", function () {
         if (b.classList.contains("cargado")) return;
