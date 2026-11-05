@@ -81,7 +81,7 @@
   function siguienteNombre() {
     var max = 0;
     fotos.forEach(function (f) {
-      var m = (f.src || f.nombre || "").match(/foto-(\d+)\.jpg$/);
+      var m = (f.src || f.nombre || "").match(/foto-(\d+)\.(?:jpg|webp)$/);
       if (m) max = Math.max(max, parseInt(m[1], 10));
     });
     return "img/galeria/foto-" + String(max + 1).padStart(3, "0") + ".jpg";
