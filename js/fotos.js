@@ -9,12 +9,12 @@ window.FOTOS = [
   { src: "img/boda-grupo.jpg", categoria: "boda", alt: "Novios e invitados en la pista de baile bajo una pérgola iluminada" },
   { src: "img/ceremonia.jpg", categoria: "boda", alt: "Ceremonia civil al aire libre sonorizada por Doblebeat Show" },
   { src: "img/coctel.jpg", categoria: "boda", alt: "Salida de los novios bajo arco de sables" },
-  { src: "img/galeria/foto-001.jpg", categoria: "equipo", alt: "DJ" },
-  { src: "img/galeria/foto-002.jpg", categoria: "horaloca", alt: "Hora Loca" },
-  { src: "img/galeria/foto-003.jpg", categoria: "boda", alt: "Ceremonia" },
-  { src: "img/galeria/foto-004.jpg", categoria: "horaloca", alt: "Novia" },
-  { src: "img/galeria/foto-005.jpg", categoria: "boda", alt: "Baile novios" },
-  { src: "img/galeria/foto-006.jpg", categoria: "horaloca", alt: "Capa" },
-  { src: "img/galeria/foto-007.jpg", categoria: "equipo", alt: "DJ" },
-  { src: "img/galeria/foto-008.jpg", categoria: "boda", alt: "Sonorización" }
+  { src: "img/galeria/foto-001.jpg", categoria: "equipo", alt: "Cabina de DJ de Doblebeat Show con focos y guirnaldas de luces" },
+  { src: "img/galeria/foto-002.jpg", categoria: "horaloca", alt: "Invitados con un cañón de efectos y humo junto a la cabina de Doblebeat Show" },
+  { src: "img/galeria/foto-003.jpg", categoria: "boda", alt: "Invitados sentados bajo una carpa en una ceremonia al aire libre" },
+  { src: "img/galeria/foto-004.jpg", categoria: "horaloca", alt: "Novia con vestido de luces entre humo rosa durante la Hora Loca" },
+  { src: "img/galeria/foto-005.jpg", categoria: "boda", alt: "Novios bailando sobre el césped rodeados de sus invitados" },
+  { src: "img/galeria/foto-006.jpg", categoria: "horaloca", alt: "Invitados con atrezzo y barras de luz en la pista durante la Hora Loca" },
+  { src: "img/galeria/foto-007.jpg", categoria: "equipo", alt: "DJ de Doblebeat Show en la cabina durante un evento al aire libre" },
+  { src: "img/galeria/foto-008.jpg", categoria: "boda", alt: "Invitados bajo una pérgola en una boda sonorizada por Doblebeat Show" }
 ];
