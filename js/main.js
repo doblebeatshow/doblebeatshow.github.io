@@ -71,7 +71,8 @@
   });
 
   var contadores = document.querySelectorAll("[data-contar]");
-  if ("IntersectionObserver" in window && !reducir) {
+  var esBot = navigator.webdriver || /bot|googlebot|crawler|spider|robot|crawling|headless/i.test(navigator.userAgent);
+  if ("IntersectionObserver" in window && !reducir && !esBot) {
     var obsC = new IntersectionObserver(function (entradas) {
       entradas.forEach(function (e) {
         if (!e.isIntersecting) return;
