@@ -30,6 +30,66 @@
     });
   }
 
+
+  // Aviso de cookies: Google Tag Manager solo se carga tras aceptar
+  var CLAVE_COOKIES = "doblebeat-cookies";
+  var leerCookies = function () {
+    try {
+      var c = JSON.parse(localStorage.getItem(CLAVE_COOKIES) || "null");
+      if (c && Date.now() - c.fecha < 3.4e10) return c;
+    } catch (e) {}
+    return null;
+  };
+  var guardarCookies = function (si) {
+    try { localStorage.setItem(CLAVE_COOKIES, JSON.stringify({ analitica: si, fecha: Date.now() })); } catch (e) {}
+  };
+  var borrarCookiesGA = function () {
+    var dominio = location.hostname.replace(/^www\./, "");
+    document.cookie.split(";").forEach(function (par) {
+      var nombre = par.split("=")[0].trim();
+      if (!/^_ga/.test(nombre)) return;
+      ["", "; domain=." + dominio, "; domain=" + dominio].forEach(function (d) {
+        document.cookie = nombre + "=; Max-Age=0; path=/" + d;
+      });
+    });
+  };
+  var aviso = null;
+  var cerrarAviso = function () { if (aviso) aviso.hidden = true; };
+  var abrirAviso = function (conFoco) {
+    if (!aviso) {
+      aviso = document.createElement("section");
+      aviso.className = "aviso-cookies";
+      aviso.setAttribute("aria-label", "Aviso de cookies");
+      aviso.innerHTML = '<p><strong>¿Nos dejas medir las visitas?</strong> Usamos Google Analytics solo si lo aceptas, para saber qué páginas se consultan. <a href="' + raiz + 'privacidad/#cookies">Más información</a></p>' +
+        '<div class="aviso-cookies-botones"><button type="button" class="btn btn-hueco" data-cookies="no">Rechazar</button><button type="button" class="btn btn-hueco" data-cookies="si">Aceptar</button></div>';
+      aviso.querySelectorAll("[data-cookies]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          var si = b.getAttribute("data-cookies") === "si";
+          guardarCookies(si);
+          if (si) {
+            if (typeof window.cargarGTM === "function") window.cargarGTM();
+          } else {
+            if (typeof window.gtag === "function") window.gtag("consent", "update", { analytics_storage: "denied" });
+            borrarCookiesGA();
+          }
+          cerrarAviso();
+        });
+      });
+      document.body.appendChild(aviso);
+    }
+    aviso.hidden = false;
+    if (conFoco) aviso.querySelector("button").focus();
+  };
+  document.querySelectorAll(".pie .creditos").forEach(function (c) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "enlace-cookies";
+    b.textContent = "Configurar cookies";
+    b.addEventListener("click", function () { abrirAviso(true); });
+    c.appendChild(b);
+  });
+  if (!leerCookies()) abrirAviso(false);
+
   var año = document.getElementById("anio");
   if (año) año.textContent = new Date().getFullYear();
 
@@ -364,7 +424,7 @@
           form.reset();
           preseleccionar();
           mostrar("ok", "<strong>¡Solicitud recibida!</strong> Te contestamos en menos de 24 horas. Si tienes prisa, <a href=\"" + urlWa + "\" target=\"_blank\" rel=\"noopener\">escríbenos por WhatsApp</a>.");
-          if (typeof window.gtag === "function") window.gtag("event", "generate_lead");
+          if (window.dataLayer) window.dataLayer.push({ event: "generate_lead" });
         })
         .catch(function () {
           mostrar("error", "No se ha podido enviar. <a href=\"" + urlWa + "\" target=\"_blank\" rel=\"noopener\">Envíalo por WhatsApp</a> o llámanos al <a href=\"tel:+34651306185\">651 306 185</a>.");

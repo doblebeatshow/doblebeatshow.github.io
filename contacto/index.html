@@ -3,6 +3,24 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Google Tag Manager: solo se carga si el visitante acepta las cookies de análisis -->
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('consent', 'default', {ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'denied'});
+window.cargarGTM = function () {
+  if (window.gtmCargado) return;
+  window.gtmCargado = true;
+  gtag('consent', 'update', {analytics_storage: 'granted'});
+  dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
+  var j = document.createElement('script');
+  j.async = true;
+  j.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-5KFPL42W';
+  document.head.appendChild(j);
+};
+try { var cc = JSON.parse(localStorage.getItem('doblebeat-cookies') || 'null'); if (cc && cc.analitica === true && Date.now() - cc.fecha < 3.4e10) cargarGTM(); } catch (e) {}
+</script>
+<!-- Fin de Google Tag Manager -->
 <title>Comprueba tu fecha y pide presupuesto | Doblebeat Show</title>
 <meta name="description" content="¿Está libre tu fecha? Pide presupuesto para tu boda, verbena o evento. Llama al 651 306 185 o escríbenos por WhatsApp. Respuesta en menos de 24 horas.">
 <meta name="robots" content="index, follow, max-image-preview:large">
@@ -24,7 +42,7 @@
 
 <link rel="preload" as="font" type="font/woff2" href="../fonts/bebas-neue-400.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="../fonts/poppins-400.woff2" crossorigin>
-<link rel="stylesheet" href="../css/estilo.css?v=18">
+<link rel="stylesheet" href="../css/estilo.css?v=19">
 <script type="application/ld+json">{"@type": ["LocalBusiness", "EntertainmentBusiness", "ProfessionalService"], "@id": "https://doblebeatshow.es/#negocio", "name": "Doblebeat Show", "alternateName": ["Discomóvil Doblebeat Show", "Doblebeat Show DJ", "Doblebeat", "Doble Beat", "Double Beat", "Doublebeat", "Doblebit", "Double Bit"], "description": "Doblebeat Show es la marca de DJ y discomóvil creada en 2025 que agrupa la trayectoria profesional de Pedroja, que pincha en directo desde 2014, con más de 12 años de experiencia y más de 300 eventos. Bodas, verbenas, eventos privados y empresas en Ciudad Real, Toledo, Cuenca y Albacete, con sesión DJ en directo, iluminación robótica, fuego frío, Hora Loca y coordinadora de momentos.", "url": "https://doblebeatshow.es/", "logo": "https://doblebeatshow.es/img/logo-cuadrado.png", "image": ["https://doblebeatshow.es/img/fiesta-pista.jpg", "https://doblebeatshow.es/img/boda-grupo.jpg", "https://doblebeatshow.es/img/fuego-frio.jpg"], "telephone": "+34651306185", "email": "hola@doblebeatshow.es", "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "10:00", "closes": "14:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "16:00", "closes": "20:00"}], "priceRange": "600€ - 2000€", "foundingDate": "2025", "founder": {"@type": "Person", "@id": "https://doblebeatshow.es/quienes-somos/#pedroja", "name": "Pedroja", "alternateName": "Pedroja DJ", "jobTitle": "DJ de bodas y eventos", "description": "DJ profesional que pincha en directo desde 2014, con más de 12 años de experiencia y más de 300 eventos en Castilla-La Mancha. En 2025 creó Doblebeat Show, la marca que agrupa esa trayectoria."}, "address": {"@type": "PostalAddress", "addressLocality": "Tomelloso", "addressRegion": "Ciudad Real", "postalCode": "13700", "addressCountry": "ES"}, "geo": {"@type": "GeoCoordinates", "latitude": 39.158, "longitude": -3.021}, "hasMap": "https://maps.app.goo.gl/gmYvw5jiiUqroNid7", "areaServed": [{"@type": "AdministrativeArea", "name": "Provincia de Ciudad Real", "sameAs": "https://www.wikidata.org/wiki/Q54932"}, {"@type": "AdministrativeArea", "name": "Provincia de Toledo", "sameAs": "https://www.wikidata.org/wiki/Q54929"}, {"@type": "AdministrativeArea", "name": "Provincia de Cuenca", "sameAs": "https://www.wikidata.org/wiki/Q54888"}, {"@type": "AdministrativeArea", "name": "Provincia de Albacete", "sameAs": "https://www.wikidata.org/wiki/Q54889"}, {"@type": "City", "name": "Tomelloso"}, {"@type": "City", "name": "Ciudad Real"}, {"@type": "City", "name": "Toledo"}, {"@type": "City", "name": "Cuenca"}, {"@type": "City", "name": "Albacete"}, {"@type": "City", "name": "Alcázar de San Juan"}, {"@type": "City", "name": "Valdepeñas"}, {"@type": "City", "name": "Daimiel"}, {"@type": "City", "name": "Villarrobledo"}, {"@type": "City", "name": "Quintanar de la Orden"}], "sameAs": ["https://www.instagram.com/doblebeatshow/", "https://www.bodas.net/musica/discomovil-doblebeat-show--e284393", "https://maps.app.goo.gl/gmYvw5jiiUqroNid7"], "contactPoint": [{"@type": "ContactPoint", "telephone": "+34651306185", "contactType": "customer service", "availableLanguage": "es"}], "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Servicios de espectáculo y sonido", "itemListElement": [{"@type": "Offer", "priceSpecification": {"@type": "PriceSpecification", "minPrice": 1200, "priceCurrency": "EUR"}, "itemOffered": {"@type": "Service", "name": "Discomóvil y sonorización para verbenas y fiestas patronales", "description": "Show de verbena, animación, iluminación DMX, sonido profesional y efectos especiales para municipios y comisiones de festejos."}}, {"@type": "Offer", "priceSpecification": {"@type": "PriceSpecification", "minPrice": 600, "priceCurrency": "EUR"}, "itemOffered": {"@type": "Service", "name": "DJ para eventos privados", "description": "Sesión DJ en directo, sonido e iluminación para cumpleaños, aniversarios y despedidas, con efectos de fuego frío, humo y confeti."}}, {"@type": "Offer", "priceSpecification": {"@type": "PriceSpecification", "minPrice": 1500, "priceCurrency": "EUR"}, "itemOffered": {"@type": "Service", "name": "Paquete Barra Libre para bodas", "description": "Sesión DJ de 5 horas, sonido profesional, iluminación de club, coordinadora de momentos y Hora Loca."}}, {"@type": "Offer", "priceSpecification": {"@type": "PriceSpecification", "minPrice": 2000, "priceCurrency": "EUR"}, "itemOffered": {"@type": "Service", "name": "Boda Completa", "description": "Sonorización de ceremonia, cóctel y banquete, sesión DJ de 5 horas, equipo secundario con microfonía, coordinadora y Hora Loca."}}, {"@type": "Offer", "priceSpecification": {"@type": "PriceSpecification", "minPrice": 1000, "priceCurrency": "EUR"}, "itemOffered": {"@type": "Service", "name": "Sonorización de eventos de empresa"}}]}, "@context": "https://schema.org"}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://doblebeatshow.es/"}, {"@type": "ListItem", "position": 2, "name": "Contacto", "item": "https://doblebeatshow.es/contacto/"}]}</script>
 </head>
@@ -125,9 +143,9 @@
   <a href="https://wa.me/34651306185" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.7.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.6-.3z"/></svg>WhatsApp</a>
   <a class="principal" href="#contacto"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg>Presupuesto</a>
 </nav>
-<script src="../js/config.js?v=18" defer></script>
-<script src="../js/fotos.js?v=18" defer></script>
-<script src="../js/videos.js?v=18" defer></script>
-<script src="../js/main.js?v=18" defer></script>
+<script src="../js/config.js?v=19" defer></script>
+<script src="../js/fotos.js?v=19" defer></script>
+<script src="../js/videos.js?v=19" defer></script>
+<script src="../js/main.js?v=19" defer></script>
 </body>
 </html>
