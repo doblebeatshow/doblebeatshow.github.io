@@ -41,13 +41,14 @@
 <div class="aviso">
   <strong>Cómo se usa</strong>
   <ol>
-    <li>Abre este archivo (<code>admin.html</code>) con Chrome, Edge o Safari desde la carpeta de la web.</li>
+    <li>Abre este archivo (<code>admin.html</code>) con <b>Chrome o Edge</b> desde la carpeta de la web.</li>
     <li>Añade fotos nuevas, cambia su categoría o descripción, ordénalas o quita las que no quieras.</li>
     <li>Escribe una descripción en cada foto: la leen Google y las personas que usan lector de pantalla.</li>
-    <li>Pulsa <b>Generar archivos</b>. Se descargarán las fotos nuevas en WebP optimizado (como el resto de la web) y los archivos <code>fotos.js</code> y <code>videos.js</code>.</li>
-    <li>Copia las fotos nuevas en la carpeta <code>img/galeria/</code> y sustituye <code>js/fotos.js</code> y <code>js/videos.js</code> por los descargados.</li>
-    <li>Sube esos archivos a GitHub (botón <b>Add file → Upload files</b>).</li>
+    <li>Pulsa <b>Guardar en la web</b>. La primera vez te pedirá elegir la carpeta de la web (la que contiene <code>index.html</code>) y permiso para modificarla.</li>
+    <li>Las fotos nuevas se guardan en WebP en <code>img/galeria/</code> y se actualizan <code>js/fotos.js</code> y <code>js/videos.js</code>, sin pasar por Descargas.</li>
+    <li>Sube los cambios a GitHub.</li>
   </ol>
+  <p style="margin:10px 0 0">En Safari o Firefox no se puede escribir en carpetas: allí los archivos se descargan y tendrás que copiarlos tú a <code>img/galeria/</code> y <code>js/</code>.</p>
   <p style="margin:10px 0 0">Las fotos HEIC del iPhone: en Safari se convierten solas. En Chrome o Edge, expórtalas antes a JPG desde la app Fotos. Si tu navegador no sabe crear WebP (Safari antiguo), las fotos se guardan en JPG y te lo indicamos al terminar.</p>
 </div>
 
@@ -64,7 +65,8 @@
   <button type="button" id="addVideo" class="quitar">+ Añadir vídeo</button>
 </div>
 
-<p style="margin-top:28px"><button type="button" class="principal" id="generar">Generar archivos</button></p>
+<p style="margin-top:28px"><button type="button" class="principal" id="generar">Guardar en la web</button></p>
+<p id="carpeta" style="margin:8px 0 0;color:#555"></p>
 <div id="estado"></div>
 
 <script src="js/fotos.js"></script>
@@ -198,6 +200,74 @@
 
   function txt(s) { return JSON.stringify(String(s || "")); }
 
+  // --- Guardado directo en la carpeta de la web (Chrome y Edge) ---
+  var puedeCarpeta = "showDirectoryPicker" in window;
+  var carpeta = null;
+  var infoCarpeta = document.getElementById("carpeta");
+
+  function bd() {
+    return new Promise(function (ok, ko) {
+      var r = indexedDB.open("gestor-galeria", 1);
+      r.onupgradeneeded = function () { r.result.createObjectStore("ajustes"); };
+      r.onsuccess = function () { ok(r.result); };
+      r.onerror = function () { ko(r.error); };
+    });
+  }
+  async function guardarCarpeta(h) {
+    try { var d = await bd(); d.transaction("ajustes", "readwrite").objectStore("ajustes").put(h, "carpeta"); } catch (e) {}
+  }
+  async function leerCarpeta() {
+    try {
+      var d = await bd();
+      return await new Promise(function (ok) {
+        var r = d.transaction("ajustes").objectStore("ajustes").get("carpeta");
+        r.onsuccess = function () { ok(r.result || null); };
+        r.onerror = function () { ok(null); };
+      });
+    } catch (e) { return null; }
+  }
+  function mostrarCarpeta() {
+    if (!puedeCarpeta) { infoCarpeta.textContent = "Este navegador no puede guardar en carpetas: los archivos se descargarán."; return; }
+    infoCarpeta.innerHTML = carpeta
+      ? 'Carpeta de la web: <b></b> · <a href="#" id="cambiarCarpeta">Cambiar</a>'
+      : "La primera vez te pediremos elegir la carpeta de la web.";
+    if (carpeta) {
+      infoCarpeta.querySelector("b").textContent = carpeta.name;
+      document.getElementById("cambiarCarpeta").onclick = async function (e) {
+        e.preventDefault();
+        try { await elegirCarpeta(); } catch (err) { if (err.name !== "AbortError") estado.textContent = "Error: " + err.message; }
+      };
+    }
+  }
+  async function existe(dir, nombre, tipo) {
+    try { if (tipo === "dir") await dir.getDirectoryHandle(nombre); else await dir.getFileHandle(nombre); return true; } catch (e) { return false; }
+  }
+  async function elegirCarpeta() {
+    var h = await window.showDirectoryPicker({ id: "doblebeat-web", mode: "readwrite" });
+    if (!(await existe(h, "index.html")) || !(await existe(h, "js", "dir")) || !(await existe(h, "img", "dir"))) {
+      throw new Error("La carpeta «" + h.name + "» no es la de la web. Elige la que contiene index.html y las carpetas img y js.");
+    }
+    carpeta = h;
+    await guardarCarpeta(h);
+    mostrarCarpeta();
+  }
+  async function permiso(h) {
+    var o = { mode: "readwrite" };
+    if ((await h.queryPermission(o)) === "granted") return true;
+    return (await h.requestPermission(o)) === "granted";
+  }
+  async function escribir(ruta, blob, sinSobrescribir) {
+    var partes = ruta.split("/");
+    var nombre = partes.pop();
+    var dir = carpeta;
+    for (var i = 0; i < partes.length; i++) dir = await dir.getDirectoryHandle(partes[i], { create: true });
+    if (sinSobrescribir && (await existe(dir, nombre))) throw new Error("Ya existe " + ruta + " en la carpeta. Recarga esta página para numerar bien las fotos.");
+    var fh = await dir.getFileHandle(nombre, { create: true });
+    var w = await fh.createWritable();
+    await w.write(blob);
+    await w.close();
+  }
+
   document.getElementById("generar").onclick = async function () {
     var b = this;
     b.disabled = true;
@@ -208,6 +278,11 @@
         b.disabled = false;
         return;
       }
+      // Carpeta de la web: se pide la primera vez y se recuerda
+      if (puedeCarpeta) {
+        if (!carpeta) await elegirCarpeta();
+        if (!(await permiso(carpeta))) throw new Error("Sin permiso para guardar en la carpeta de la web.");
+      }
       var nuevas = fotos.filter(function (f) { return f.file; });
       var enJpg = 0;
       for (var i = 0; i < nuevas.length; i++) {
@@ -217,29 +292,45 @@
           nuevas[i].src = nuevas[i].src.replace(/\.webp$/, ".jpg");
           enJpg++;
         }
-        descargar(blob, nuevas[i].src.split("/").pop());
-        await new Promise(function (r) { setTimeout(r, 350); });
+        if (puedeCarpeta) {
+          await escribir(nuevas[i].src, blob, true);
+        } else {
+          descargar(blob, nuevas[i].src.split("/").pop());
+          await new Promise(function (r) { setTimeout(r, 350); });
+        }
       }
       var js = "window.FOTOS = [\n" + fotos.map(function (f) {
         return "  { src: " + txt(f.src) + ", categoria: " + txt(f.categoria) + ", alt: " + txt(f.alt) + " }";
       }).join(",\n") + "\n];\n";
-      descargar(new Blob([js], { type: "text/javascript" }), "fotos.js");
-      await new Promise(function (r) { setTimeout(r, 350); });
       var vs = videos.filter(function (v) { return v.youtube; });
       var jv = "window.VIDEOS = [\n" + vs.map(function (v) {
         return "  { youtube: " + txt(v.youtube) + ", formato: " + txt(v.formato) + ", titulo: " + txt(v.titulo) + ", seccion: " + txt(v.seccion) + " }";
       }).join(",\n") + "\n];\n";
-      descargar(new Blob([jv], { type: "text/javascript" }), "videos.js");
-      estado.textContent = "Listo: " + nuevas.length + " foto(s) nuevas en WebP + fotos.js + videos.js en tu carpeta de Descargas. Si el navegador pregunta, permite descargas múltiples." +
-        (enJpg ? " Ojo: " + enJpg + " foto(s) se han guardado en JPG porque este navegador no crea WebP; usa Chrome o Edge para que queden en WebP." : "");
+      var aviso = enJpg ? " Ojo: " + enJpg + " foto(s) se han guardado en JPG porque este navegador no crea WebP; usa Chrome o Edge para que queden en WebP." : "";
+      if (puedeCarpeta) {
+        await escribir("js/fotos.js", new Blob([js], { type: "text/javascript" }));
+        await escribir("js/videos.js", new Blob([jv], { type: "text/javascript" }));
+        // Las fotos ya guardadas dejan de ser nuevas, para no duplicarlas si vuelves a guardar
+        nuevas.forEach(function (f) { delete f.file; });
+        pintar();
+        estado.textContent = "Guardado en «" + carpeta.name + "»: " + nuevas.length + " foto(s) nuevas en img/galeria y js/fotos.js y js/videos.js actualizados. Ahora sube los cambios a GitHub." + aviso;
+      } else {
+        descargar(new Blob([js], { type: "text/javascript" }), "fotos.js");
+        await new Promise(function (r) { setTimeout(r, 350); });
+        descargar(new Blob([jv], { type: "text/javascript" }), "videos.js");
+        estado.textContent = "Listo: " + nuevas.length + " foto(s) nuevas + fotos.js + videos.js en tu carpeta de Descargas. Cópialos a img/galeria y js." + aviso;
+      }
     } catch (e) {
-      estado.textContent = "Error: " + e.message;
+      if (e.name === "AbortError") estado.textContent = "No se ha elegido carpeta; no se ha guardado nada.";
+      else estado.textContent = "Error: " + e.message;
     }
     b.disabled = false;
   };
 
   pintar();
   pintarVideos();
+  mostrarCarpeta();
+  if (puedeCarpeta) leerCarpeta().then(function (h) { if (h) { carpeta = h; mostrarCarpeta(); } });
 })();
 </script>
 </body>
