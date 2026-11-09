@@ -43,11 +43,12 @@
   <ol>
     <li>Abre este archivo (<code>admin.html</code>) con Chrome, Edge o Safari desde la carpeta de la web.</li>
     <li>Añade fotos nuevas, cambia su categoría o descripción, ordénalas o quita las que no quieras.</li>
-    <li>Pulsa <b>Generar archivos</b>. Se descargarán las fotos nuevas en JPG optimizado y los archivos <code>fotos.js</code> y <code>videos.js</code>.</li>
+    <li>Escribe una descripción en cada foto: la leen Google y las personas que usan lector de pantalla.</li>
+    <li>Pulsa <b>Generar archivos</b>. Se descargarán las fotos nuevas en WebP optimizado (como el resto de la web) y los archivos <code>fotos.js</code> y <code>videos.js</code>.</li>
     <li>Copia las fotos nuevas en la carpeta <code>img/galeria/</code> y sustituye <code>js/fotos.js</code> y <code>js/videos.js</code> por los descargados.</li>
     <li>Sube esos archivos a GitHub (botón <b>Add file → Upload files</b>).</li>
   </ol>
-  <p style="margin:10px 0 0">Las fotos HEIC del iPhone: en Safari se convierten solas. En Chrome o Edge, expórtalas antes a JPG desde la app Fotos.</p>
+  <p style="margin:10px 0 0">Las fotos HEIC del iPhone: en Safari se convierten solas. En Chrome o Edge, expórtalas antes a JPG desde la app Fotos. Si tu navegador no sabe crear WebP (Safari antiguo), las fotos se guardan en JPG y te lo indicamos al terminar.</p>
 </div>
 
 <h2>Fotos de la galería</h2>
@@ -84,7 +85,7 @@
       var m = (f.src || f.nombre || "").match(/foto-(\d+)\.(?:jpg|webp)$/);
       if (m) max = Math.max(max, parseInt(m[1], 10));
     });
-    return "img/galeria/foto-" + String(max + 1).padStart(3, "0") + ".jpg";
+    return "img/galeria/foto-" + String(max + 1).padStart(3, "0") + ".webp";
   }
 
   function pintar() {
@@ -163,7 +164,9 @@
     pintar();
   });
 
-  function aJpg(file) {
+  // Convierte la foto a WebP (calidad 0,78, como el resto de la web). Si el navegador
+  // no sabe crear WebP, devuelve un JPG para no perder la foto.
+  function aWebp(file) {
     return new Promise(function (ok, ko) {
       var img = new Image();
       img.onload = function () {
@@ -171,8 +174,13 @@
         var c = document.createElement("canvas");
         c.width = Math.round(img.naturalWidth * k);
         c.height = Math.round(img.naturalHeight * k);
-        c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
-        c.toBlob(function (b) { b ? ok(b) : ko(new Error("No se pudo convertir " + file.name)); }, "image/jpeg", 0.8);
+        var ctx = c.getContext("2d");
+        ctx.imageSmoothingQuality = "high";
+        ctx.drawImage(img, 0, 0, c.width, c.height);
+        c.toBlob(function (b) {
+          if (b && b.type === "image/webp") return ok(b);
+          c.toBlob(function (j) { j ? ok(j) : ko(new Error("No se pudo convertir " + file.name)); }, "image/jpeg", 0.8);
+        }, "image/webp", 0.78);
       };
       img.onerror = function () { ko(new Error("Tu navegador no puede leer " + file.name + ". Si es HEIC, expórtala a JPG.")); };
       img.src = URL.createObjectURL(file);
@@ -194,10 +202,21 @@
     var b = this;
     b.disabled = true;
     try {
+      var sinDescripcion = fotos.filter(function (f) { return !String(f.alt || "").trim(); }).length;
+      if (sinDescripcion) {
+        estado.textContent = "Falta la descripción en " + sinDescripcion + " foto(s). Escríbela antes de generar los archivos.";
+        b.disabled = false;
+        return;
+      }
       var nuevas = fotos.filter(function (f) { return f.file; });
+      var enJpg = 0;
       for (var i = 0; i < nuevas.length; i++) {
         estado.textContent = "Preparando foto " + (i + 1) + " de " + nuevas.length + "…";
-        var blob = await aJpg(nuevas[i].file);
+        var blob = await aWebp(nuevas[i].file);
+        if (blob.type !== "image/webp") {
+          nuevas[i].src = nuevas[i].src.replace(/\.webp$/, ".jpg");
+          enJpg++;
+        }
         descargar(blob, nuevas[i].src.split("/").pop());
         await new Promise(function (r) { setTimeout(r, 350); });
       }
@@ -211,7 +230,8 @@
         return "  { youtube: " + txt(v.youtube) + ", formato: " + txt(v.formato) + ", titulo: " + txt(v.titulo) + ", seccion: " + txt(v.seccion) + " }";
       }).join(",\n") + "\n];\n";
       descargar(new Blob([jv], { type: "text/javascript" }), "videos.js");
-      estado.textContent = "Listo: " + nuevas.length + " foto(s) nuevas + fotos.js + videos.js en tu carpeta de Descargas. Si el navegador pregunta, permite descargas múltiples.";
+      estado.textContent = "Listo: " + nuevas.length + " foto(s) nuevas en WebP + fotos.js + videos.js en tu carpeta de Descargas. Si el navegador pregunta, permite descargas múltiples." +
+        (enJpg ? " Ojo: " + enJpg + " foto(s) se han guardado en JPG porque este navegador no crea WebP; usa Chrome o Edge para que queden en WebP." : "");
     } catch (e) {
       estado.textContent = "Error: " + e.message;
     }
