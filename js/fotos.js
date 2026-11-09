@@ -8,7 +8,7 @@ window.FOTOS = [
   { src: "img/hora-loca-novia.webp", categoria: "horaloca", alt: "Novia e invitados con atrezzo de plumas en la Hora Loca" },
   { src: "img/boda-grupo.webp", categoria: "boda", alt: "Novios e invitados en la pista de baile bajo una pérgola iluminada" },
   { src: "img/ceremonia.webp", categoria: "boda", alt: "Ceremonia civil al aire libre sonorizada por Doblebeat Show" },
-  { src: "img/coctel.webp", categoria: "boda", alt: "Salida de los novios bajo arco de sables" },
+  { src: "img/boda.webp", categoria: "boda", alt: "Salida de los novios bajo arco de sables" },
   { src: "img/galeria/foto-001.webp", categoria: "equipo", alt: "Cabina de DJ de Doblebeat Show con focos y guirnaldas de luces" },
   { src: "img/galeria/foto-002.webp", categoria: "horaloca", alt: "Invitados con un cañón de efectos y humo junto a la cabina de Doblebeat Show" },
   { src: "img/galeria/foto-003.webp", categoria: "boda", alt: "Invitados sentados bajo una carpa en una ceremonia al aire libre" },
