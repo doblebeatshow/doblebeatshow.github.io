@@ -1,5 +1,4 @@
 window.FOTOS = [
-  { src: "img/fiesta-pista.webp", categoria: "horaloca", alt: "Invitados bailando con barras de luz en la barra libre de una boda" },
   { src: "img/hora-loca-alas.webp", categoria: "horaloca", alt: "Novia con alas de luz durante la Hora Loca" },
   { src: "img/fuego-frio.webp", categoria: "fuego", alt: "Máquinas de fuego frío en la pista de baile de una boda" },
   { src: "img/iluminacion-dmx.webp", categoria: "equipo", alt: "Cabina de DJ Doblebeat Show con iluminación robótica DMX" },
@@ -20,5 +19,11 @@ window.FOTOS = [
   { src: "img/galeria/foto-009.webp", categoria: "horaloca", alt: "Novia con Capa de luces" },
   { src: "img/galeria/foto-010.webp", categoria: "equipo", alt: "Equipo doblebeat show" },
   { src: "img/galeria/foto-011.webp", categoria: "horaloca", alt: "Novio plumas jefe indio" },
-  { src: "img/galeria/foto-012.webp", categoria: "horaloca", alt: "Disfraces Hora Loca" }
+  { src: "img/galeria/foto-012.webp", categoria: "horaloca", alt: "Disfraces Hora Loca" },
+  { src: "img/galeria/foto-013.webp", categoria: "horaloca", alt: "Boda bailando Limbo" },
+  { src: "img/galeria/foto-014.webp", categoria: "horaloca", alt: "Novia con Capa de Luces Led" },
+  { src: "img/galeria/foto-015.webp", categoria: "horaloca", alt: "Pistola de chupitos" },
+  { src: "img/galeria/foto-016.webp", categoria: "horaloca", alt: "Chica con capa led" },
+  { src: "img/galeria/foto-017.webp", categoria: "horaloca", alt: "Gente bailando en boda" },
+  { src: "img/galeria/foto-018.webp", categoria: "equipo", alt: "Pistola de humo" }
 ];
