@@ -19,5 +19,6 @@ window.FOTOS = [
   { src: "img/galeria/foto-008.webp", categoria: "boda", alt: "Invitados bajo una pérgola en una boda sonorizada por Doblebeat Show" },
   { src: "img/galeria/foto-009.webp", categoria: "horaloca", alt: "Novia con Capa de luces" },
   { src: "img/galeria/foto-010.webp", categoria: "equipo", alt: "Equipo doblebeat show" },
-  { src: "img/galeria/foto-011.webp", categoria: "horaloca", alt: "Novio plumas jefe indio" }
+  { src: "img/galeria/foto-011.webp", categoria: "horaloca", alt: "Novio plumas jefe indio" },
+  { src: "img/galeria/foto-012.webp", categoria: "horaloca", alt: "Disfraces Hora Loca" }
 ];
