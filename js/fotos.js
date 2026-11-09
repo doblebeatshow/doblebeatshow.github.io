@@ -16,5 +16,8 @@ window.FOTOS = [
   { src: "img/galeria/foto-005.webp", categoria: "boda", alt: "Novios bailando sobre el césped rodeados de sus invitados" },
   { src: "img/galeria/foto-006.webp", categoria: "horaloca", alt: "Invitados con atrezzo y barras de luz en la pista durante la Hora Loca" },
   { src: "img/galeria/foto-007.webp", categoria: "equipo", alt: "DJ de Doblebeat Show en la cabina durante un evento al aire libre" },
-  { src: "img/galeria/foto-008.webp", categoria: "boda", alt: "Invitados bajo una pérgola en una boda sonorizada por Doblebeat Show" }
+  { src: "img/galeria/foto-008.webp", categoria: "boda", alt: "Invitados bajo una pérgola en una boda sonorizada por Doblebeat Show" },
+  { src: "img/galeria/foto-009.webp", categoria: "horaloca", alt: "Novia con Capa de luces" },
+  { src: "img/galeria/foto-010.webp", categoria: "equipo", alt: "Equipo doblebeat show" },
+  { src: "img/galeria/foto-011.webp", categoria: "horaloca", alt: "Novio plumas jefe indio" }
 ];
