@@ -90,6 +90,20 @@
   });
   if (!leerCookies()) abrirAviso(false);
 
+  // Short de YouTube con fachada: solo se carga YouTube cuando el visitante pulsa
+  document.querySelectorAll(".short-play[data-youtube]").forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      var f = document.createElement("iframe");
+      f.src = "https://www.youtube-nocookie.com/embed/" + a.getAttribute("data-youtube") + "?autoplay=1&rel=0&playsinline=1";
+      f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+      f.allowFullscreen = true;
+      f.title = a.getAttribute("data-titulo") || "Vídeo de Doblebeat Show";
+      a.parentNode.replaceChild(f, a);
+      f.focus();
+    });
+  });
+
   var año = document.getElementById("anio");
   if (año) año.textContent = new Date().getFullYear();
 
@@ -307,7 +321,7 @@
       var b = document.createElement("button");
       b.type = "button";
       b.className = "video" + (v.formato === "horizontal" ? " horizontal" : "");
-      b.style.backgroundImage = "url(https://i.ytimg.com/vi_webp/" + id + "/hqdefault.webp)";
+      b.style.backgroundImage = v.miniatura ? "url(" + (/^(https?:)?\//.test(v.miniatura) ? v.miniatura : raiz + v.miniatura) + ")" : "url(https://i.ytimg.com/vi_webp/" + id + "/hqdefault.webp)";
       b.setAttribute("aria-label", "Reproducir vídeo: " + (v.titulo || "Doblebeat Show"));
       b.addEventListener("click", function () {
         if (b.classList.contains("cargado")) return;
