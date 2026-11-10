@@ -25,5 +25,7 @@ window.FOTOS = [
   { src: "img/galeria/foto-015.webp", categoria: "horaloca", alt: "Pistola de chupitos" },
   { src: "img/galeria/foto-016.webp", categoria: "horaloca", alt: "Chica con capa led" },
   { src: "img/galeria/foto-017.webp", categoria: "horaloca", alt: "Gente bailando en boda" },
-  { src: "img/galeria/foto-018.webp", categoria: "equipo", alt: "Pistola de humo" }
+  { src: "img/galeria/foto-018.webp", categoria: "equipo", alt: "Pistola de humo" },
+  { src: "img/galeria/foto-019.webp", categoria: "boda", alt: "Ceremonia civil al aire libre con camino de piedra, sillas blancas y guirnaldas de luces al atardecer" },
+  { src: "img/galeria/foto-020.webp", categoria: "boda", alt: "Invitados sentados en una ceremonia al aire libre bajo un pino, con carpas y luces de guirnalda" }
 ];
