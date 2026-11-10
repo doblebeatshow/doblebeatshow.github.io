@@ -58,10 +58,10 @@
   var abrirAviso = function (conFoco) {
     if (!aviso) {
       aviso = document.createElement("section");
-      aviso.className = "aviso-cookies";
+      aviso.className = "panel-medicion";
       aviso.setAttribute("aria-label", "Aviso de cookies");
       aviso.innerHTML = '<p><strong>¿Nos dejas medir las visitas?</strong> Usamos Google Analytics solo si lo aceptas, para saber qué páginas se consultan. <a href="' + raiz + 'privacidad/#cookies">Más información</a></p>' +
-        '<div class="aviso-cookies-botones"><button type="button" class="btn btn-hueco" data-cookies="no">Rechazar</button><button type="button" class="btn btn-hueco" data-cookies="si">Aceptar</button></div>';
+        '<div class="panel-medicion-botones"><button type="button" class="btn btn-hueco" data-cookies="no">Rechazar</button><button type="button" class="btn btn-hueco" data-cookies="si">Aceptar</button></div>';
       aviso.querySelectorAll("[data-cookies]").forEach(function (b) {
         b.addEventListener("click", function () {
           var si = b.getAttribute("data-cookies") === "si";

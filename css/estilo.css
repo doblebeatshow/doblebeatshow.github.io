@@ -843,7 +843,7 @@ dialog.captura .cerrar { position: absolute; top: 6px; right: 6px; width: 38px; 
 .tabla-comparar tbody th { font-weight: 500; }
 
 /* Aviso de cookies */
-.aviso-cookies {
+.panel-medicion {
   position: fixed;
   z-index: 70;
   left: 16px;
@@ -859,16 +859,16 @@ dialog.captura .cerrar { position: absolute; top: 6px; right: 6px; width: 38px; 
   font-size: .92rem;
   transition: opacity 200ms var(--ease-out), transform 200ms var(--ease-out);
 }
-@starting-style { .aviso-cookies { opacity: 0; transform: translateY(8px); } }
-.aviso-cookies[hidden] { display: none; }
-.aviso-cookies p { margin: 0 0 14px; color: var(--texto); }
-.aviso-cookies strong { color: var(--blanco); }
-.aviso-cookies-botones { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.aviso-cookies .btn { min-height: 44px; padding: 10px 14px; }
+@starting-style { .panel-medicion { opacity: 0; transform: translateY(8px); } }
+.panel-medicion[hidden] { display: none; }
+.panel-medicion p { margin: 0 0 14px; color: var(--texto); }
+.panel-medicion strong { color: var(--blanco); }
+.panel-medicion-botones { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.panel-medicion .btn { min-height: 44px; padding: 10px 14px; }
 .enlace-cookies { min-height: 24px; background: none; border: 0; padding: 0; font: inherit; color: var(--suave); cursor: pointer; text-decoration: underline; text-underline-offset: .18em; }
 @media (hover: hover) and (pointer: fine) { .enlace-cookies:hover { color: var(--rosa-2); } }
-@media (max-width: 860px) { .aviso-cookies { bottom: calc(84px + env(safe-area-inset-bottom)); } }
-@media (prefers-reduced-motion: reduce) { .aviso-cookies { transition-property: opacity; } @starting-style { .aviso-cookies { transform: none; } } }
+@media (max-width: 860px) { .panel-medicion { bottom: calc(84px + env(safe-area-inset-bottom)); } }
+@media (prefers-reduced-motion: reduce) { .panel-medicion { transition-property: opacity; } @starting-style { .panel-medicion { transform: none; } } }
 
 .extra .extra-precio { display: block; margin-top: 8px; font-style: normal; font-weight: 700; color: var(--blanco); }
 
