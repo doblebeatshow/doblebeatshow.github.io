@@ -888,7 +888,7 @@ dialog.captura .cerrar { position: absolute; top: 6px; right: 6px; width: 38px; 
 .short iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 @media (hover: hover) and (pointer: fine) { .short-play:hover img { transform: scale(1.03); } }
 @media (prefers-reduced-motion: reduce) { .short-play img, .short-play::after { transition: none; } }
-.shorts { display: grid; grid-template-columns: repeat(2, minmax(0, 320px)); justify-content: center; gap: 28px; }
+.shorts { display: grid; grid-template-columns: repeat(3, minmax(0, 320px)); justify-content: center; gap: clamp(14px, 2.4vw, 28px); }
 .short-tarjeta { margin: 0; }
 .short-tarjeta figcaption { margin-top: 12px; text-align: center; font-weight: 600; color: var(--texto); }
 .shorts-cta { text-align: center; margin: 36px 0 0; }
