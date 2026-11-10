@@ -207,7 +207,9 @@
 
   var grid = document.getElementById("galeria-grid");
   if (grid) {
-    var fotos = window.FOTOS || [];
+    // data-categoria limita la galería a una sola categoría (p. ej. la página de la Hora Loca)
+    var soloCategoria = grid.getAttribute("data-categoria");
+    var fotos = (window.FOTOS || []).filter(function (f) { return !soloCategoria || f.categoria === soloCategoria; });
     var filtros = document.getElementById("galeria-filtros");
     var visor = document.getElementById("visor");
     var visorImg = visor.querySelector("img");
@@ -241,7 +243,11 @@
       if (origenFoco && origenFoco.focus) origenFoco.focus();
     };
 
+    var cajaVideosGaleria = document.querySelector('[data-videos="galeria"]');
+    var videosGaleria = (window.VIDEOS || []).filter(function (v) { return !soloCategoria || categoriaVideo(v) === soloCategoria; });
+
     var pintar = function (cat) {
+      if (cajaVideosGaleria) ponerVideos(cajaVideosGaleria, videosGaleria.filter(function (v) { return !cat || categoriaVideo(v) === cat; }));
       grid.innerHTML = "";
       visibles = fotos.filter(function (f) { return !cat || f.categoria === cat; });
       visibles.forEach(function (f, i) {
@@ -286,6 +292,7 @@
 
     var cats = [];
     fotos.forEach(function (f) { if (cats.indexOf(f.categoria) === -1) cats.push(f.categoria); });
+    videosGaleria.forEach(function (v) { var c = categoriaVideo(v); if (cats.indexOf(c) === -1) cats.push(c); });
     var boton = function (texto, cat, activo) {
       var b = document.createElement("button");
       b.type = "button";
@@ -298,7 +305,7 @@
       });
       filtros.appendChild(b);
     };
-    if (cats.length > 1) {
+    if (filtros && cats.length > 1) {
       boton("Todas", null, true);
       cats.forEach(function (c) { boton(nombres[c] || c, c, false); });
     }
@@ -307,10 +314,22 @@
 
   document.querySelectorAll("[data-videos]").forEach(function (cajaVideos) {
     var donde = cajaVideos.getAttribute("data-videos");
-    var lista = (window.VIDEOS || []).filter(function (v) {
-      var s = v.seccion || "galeria";
-      return s === donde || s === "ambas";
-    });
+    // En la Galería los pinta su filtro; aquí solo las páginas de verbenas
+    if (donde === "galeria" && grid) return;
+    var lista = (window.VIDEOS || []).filter(function (v) { return categoriaVideo(v) === "verbena"; });
+    ponerVideos(cajaVideos, lista);
+    if (!cajaVideos.children.length) {
+      var sec = cajaVideos.closest("[data-si-videos]");
+      if (sec) sec.hidden = true;
+    }
+  });
+
+  function categoriaVideo(v) {
+    return v.categoria || (v.seccion === "verbenas" ? "verbena" : "otros");
+  }
+
+  function ponerVideos(cajaVideos, lista) {
+    cajaVideos.innerHTML = "";
     var idYoutube = function (url) {
       var m = String(url).match(/(?:youtu\.be\/|v=|shorts\/|embed\/)([\w-]{11})/);
       return m ? m[1] : (/^[\w-]{11}$/.test(url) ? url : null);
@@ -335,12 +354,8 @@
       });
       cajaVideos.appendChild(b);
     });
-    if (!cajaVideos.children.length) {
-      cajaVideos.hidden = true;
-      var sec = cajaVideos.closest("[data-si-videos]");
-      if (sec) sec.hidden = true;
-    }
-  });
+    cajaVideos.hidden = !cajaVideos.children.length;
+  }
 
   var parsearGoogle = function (url) {
     if (!url) return null;

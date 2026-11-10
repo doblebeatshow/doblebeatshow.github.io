@@ -899,7 +899,8 @@ dialog.captura .cerrar { position: absolute; top: 6px; right: 6px; width: 38px; 
 }
 /* Shorts de la galería: verticales y a un tamaño razonable */
 .videos .video:not(.horizontal) { max-width: 340px; justify-self: center; }
-.videos:not(:has(.horizontal)) { grid-template-columns: repeat(auto-fit, minmax(240px, 320px)); justify-content: center; gap: 28px; }
+.videos { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 28px; }
+.videos .video { flex: 0 1 320px; }
 /* Zonas de cobertura de la portada */
 .zonas { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
 .zona { display: flex; flex-direction: column; gap: 10px; padding: 24px; border-radius: var(--radio); background: var(--gris); border: 1px solid var(--linea); color: var(--texto); text-decoration: none; transition: border-color 200ms var(--ease-out), transform 200ms var(--ease-out); }
@@ -914,3 +915,30 @@ dialog.captura .cerrar { position: absolute; top: 6px; right: 6px; width: 38px; 
 @media (max-width: 980px) { .zonas { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .zonas { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { .zona { transition: none; } .zona:hover { transform: none; } }
+/* Galería con vídeos mezclados: el horizontal ocupa su propia fila */
+.videos .video.horizontal { flex: 0 1 100%; max-width: none; margin-inline: max(0px, calc((100% - 760px) / 2)); }
+/* Hora Loca: avance de la portada e inventario de la página propia */
+.hl-fotos { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.hl-foto { display: block; aspect-ratio: 3 / 4; border-radius: var(--radio); overflow: hidden; background: var(--gris); }
+.hl-foto img { width: 100%; height: 100%; object-fit: cover; transition: transform 300ms var(--ease-out); }
+.hl-foto:focus-visible { outline: 3px solid var(--rosa-2); outline-offset: 3px; }
+.hl-claves { list-style: none; padding: 0; margin: 28px 0 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.hl-claves li { padding: 16px 18px; border: 1px solid var(--linea); border-radius: var(--radio); background: var(--gris); color: var(--suave); font-size: .92rem; }
+.hl-claves b { display: block; color: var(--blanco); font: 400 1.5rem/1.1 "Bebas Neue", Impact, sans-serif; letter-spacing: .04em; margin-bottom: 4px; }
+.hl-cta { text-align: center; margin: 32px 0 0; }
+.hl-cta .btn { white-space: normal; text-align: center; }
+.inventario { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.inventario .efecto { grid-column: auto; }
+.efecto figcaption h3 { margin: 0; font: 400 2rem/1 "Bebas Neue", Impact, sans-serif; color: var(--blanco); letter-spacing: .04em; }
+.botones.centrados { justify-content: center; }
+@media (hover: hover) and (pointer: fine) { .hl-foto:hover img { transform: scale(1.04); } }
+@media (max-width: 980px) { .inventario, .hl-claves { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 620px) {
+  .hl-fotos { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .inventario { gap: 10px; }
+  .efecto figcaption h3 { font-size: 1.5rem; }
+  .inventario .efecto figcaption { padding: 48px 12px 12px; }
+  .inventario .efecto figcaption span { font-size: .8rem; }
+}
+@media (max-width: 400px) { .hl-claves { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { .hl-foto img { transition: none; } }
