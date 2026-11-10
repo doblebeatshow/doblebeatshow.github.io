@@ -90,13 +90,6 @@
   });
   if (!leerCookies()) abrirAviso(false);
 
-  // Glitter Bar: si una foto aún no está subida, el hueco queda como un recuadro limpio, sin icono de imagen rota
-  document.querySelectorAll(".glitter-fotos img").forEach(function (img) {
-    var ocultar = function () { img.style.visibility = "hidden"; };
-    img.addEventListener("error", ocultar);
-    if (img.complete && img.naturalWidth === 0 && img.getAttribute("src")) ocultar();
-  });
-
   var año = document.getElementById("anio");
   if (año) año.textContent = new Date().getFullYear();
 
@@ -209,7 +202,7 @@
       visorImg.alt = "";
       visor.insertBefore(visorImg, visor.querySelector(".siguiente"));
     }
-    var nombres = { boda: "Bodas", horaloca: "Hora Loca", fuego: "Fuego frío", atrezzo: "Atrezzo", equipo: "Equipo", verbena: "Verbenas", empresa: "Empresas", otros: "Otros" };
+    var nombres = { boda: "Bodas", horaloca: "Hora Loca", fuego: "Fuego frío", atrezzo: "Atrezzo", equipo: "Equipo", verbena: "Verbenas", empresa: "Empresas", glitter: "Glitter Bar", otros: "Otros" };
     var visibles = [];
     var actual = 0;
     var origenFoco = null;

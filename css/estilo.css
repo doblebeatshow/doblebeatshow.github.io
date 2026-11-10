@@ -870,13 +870,7 @@ dialog.captura .cerrar { position: absolute; top: 6px; right: 6px; width: 38px; 
 @media (max-width: 860px) { .aviso-cookies { bottom: calc(84px + env(safe-area-inset-bottom)); } }
 @media (prefers-reduced-motion: reduce) { .aviso-cookies { transition-property: opacity; } @starting-style { .aviso-cookies { transform: none; } } }
 
-/* Glitter Bar: mismas tarjetas que la Hora Loca, en cuadrícula de 4 */
-.sellos.centro { justify-content: center; margin-top: 22px; }
-.glitter-fotos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; max-width: 760px; margin: 0 auto; }
-.glitter-fotos .efecto { grid-column: auto; aspect-ratio: 4 / 5; background: linear-gradient(160deg, rgba(255, 24, 117, .26), rgba(255, 24, 117, .04)), var(--gris); }
-.glitter-cta { text-align: center; margin: 32px 0 0; }
 .extra .extra-precio { display: block; margin-top: 8px; font-style: normal; font-weight: 700; color: var(--blanco); }
-@media (max-width: 860px) { .glitter-fotos { grid-template-columns: 1fr 1fr; gap: 12px; } }
 
 /* Objetivos táctiles de al menos 24 px en móvil */
 .resena footer a { display: inline-flex; align-items: center; min-height: 32px; }
