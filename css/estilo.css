@@ -943,4 +943,3 @@ dialog.captura .cerrar { position: absolute; top: 6px; right: 6px; width: 38px; 
 @media (max-width: 400px) { .hl-claves { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { .hl-foto img { transition: none; } }
 .efecto img.foco-izq { object-position: 32% 50%; }
-.efecto.texto-arriba figcaption { inset: 0 0 auto 0; padding: 18px 20px 60px; background: linear-gradient(rgba(0, 0, 0, .92), transparent); }
