@@ -90,6 +90,13 @@
   });
   if (!leerCookies()) abrirAviso(false);
 
+  // Glitter Bar: si una foto aún no está subida, el hueco queda como un recuadro limpio, sin icono de imagen rota
+  document.querySelectorAll(".glitter-fotos img").forEach(function (img) {
+    var ocultar = function () { img.style.visibility = "hidden"; };
+    img.addEventListener("error", ocultar);
+    if (img.complete && img.naturalWidth === 0 && img.getAttribute("src")) ocultar();
+  });
+
   var año = document.getElementById("anio");
   if (año) año.textContent = new Date().getFullYear();
 
@@ -172,7 +179,13 @@
 
   document.querySelectorAll("dialog.captura").forEach(function (dlg) {
     if (typeof dlg.showModal !== "function") return;
+    // La imagen se crea aquí para no dejar en el HTML un <img> sin src
     var img = dlg.querySelector("img");
+    if (!img) {
+      img = document.createElement("img");
+      img.alt = "";
+      dlg.appendChild(img);
+    }
     dlg.parentNode.querySelectorAll("a.ver-captura").forEach(function (a) {
       a.addEventListener("click", function (e) {
         e.preventDefault();
@@ -191,6 +204,11 @@
     var filtros = document.getElementById("galeria-filtros");
     var visor = document.getElementById("visor");
     var visorImg = visor.querySelector("img");
+    if (!visorImg) {
+      visorImg = document.createElement("img");
+      visorImg.alt = "";
+      visor.insertBefore(visorImg, visor.querySelector(".siguiente"));
+    }
     var nombres = { boda: "Bodas", horaloca: "Hora Loca", fuego: "Fuego frío", atrezzo: "Atrezzo", equipo: "Equipo", verbena: "Verbenas", empresa: "Empresas", otros: "Otros" };
     var visibles = [];
     var actual = 0;
