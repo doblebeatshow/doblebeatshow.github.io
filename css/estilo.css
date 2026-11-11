@@ -669,7 +669,7 @@ dialog.captura .cerrar { position: absolute; top: 6px; right: 6px; width: 38px; 
 .texto-largo ul { padding-left: 1.2em; }
 .texto-largo li { margin-bottom: .5em; }
 .otras-zonas { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-.otras-zonas a { padding: 10px 18px; border-radius: 999px; border: 1px solid var(--linea); text-decoration: none; color: var(--texto); font-weight: 500; }
+.otras-zonas :is(a, span) { padding: 10px 18px; border-radius: 999px; border: 1px solid var(--linea); text-decoration: none; color: var(--texto); font-weight: 500; }
 
 .llamada {
   text-align: center;
