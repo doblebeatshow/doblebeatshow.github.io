@@ -375,27 +375,24 @@
   // El formulario llega ya con el tipo de evento de la página en la que está
   var preseleccionar = function () {
     var campoEvento = document.getElementById("f-evento");
-    var campoServicio = document.getElementById("f-servicio");
     if (!campoEvento) return;
     var ruta = location.pathname;
     var evento = null;
-    var servicio = null;
-    if (/\/(verbenas|discomovil-fiestas-[^/]+)\//.test(ruta)) { evento = "Verbena o fiesta patronal"; servicio = "Verbena / discomóvil"; }
-    else if (/\/empresas\//.test(ruta)) { evento = "Evento de empresa"; servicio = "Sonorización"; }
-    else if (/\/eventos-privados\//.test(ruta)) { evento = "Evento privado"; }
+    if (/\/(verbenas|discomovil-fiestas-[^/]+)\//.test(ruta)) evento = "Verbena o fiesta patronal";
+    else if (/\/empresas\//.test(ruta)) evento = "Evento de empresa";
+    else if (/\/eventos-privados\//.test(ruta)) evento = "Evento privado";
     if (evento) campoEvento.value = evento;
-    if (servicio && campoServicio) campoServicio.value = servicio;
   };
   preseleccionar();
 
   document.querySelectorAll("[data-servicio]").forEach(function (a) {
     a.addEventListener("click", function () {
-      var sel = document.getElementById("f-servicio");
-      if (sel) {
-        sel.value = a.getAttribute("data-servicio");
-        var det = sel.closest("details");
+      // El paquete elegido viaja con la solicitud aunque el formulario no lo pregunte
+      document.querySelectorAll("form.form-presupuesto").forEach(function (f) {
+        f.setAttribute("data-paquete", a.getAttribute("data-servicio"));
+        var det = f.closest("details");
         if (det) det.open = true;
-      }
+      });
     });
   });
 
@@ -431,7 +428,7 @@
         FECHA: fechaTxt,
         LUGAR: d.lugar,
         INVITADOS: d.invitados,
-        SERVICIO: d.servicio,
+        SERVICIO: form.getAttribute("data-paquete") || "A concretar", // la pregunta es obligatoria en el formulario de Google
         ORIGEN: d.origen,
         MENSAJE: d.mensaje,
         PAGINA: document.title
@@ -439,7 +436,7 @@
       var texto = "Hola Doblebeat Show, quiero pedir presupuesto.%0A%0A" + [
         ["Nombre", datos.NOMBRE], ["Teléfono", datos.TELEFONO], ["Email", datos.EMAIL],
         ["Evento", datos.EVENTO], ["Fecha", datos.FECHA], ["Lugar", datos.LUGAR],
-        ["Invitados", datos.INVITADOS], ["Servicio", datos.SERVICIO], ["Mensaje", datos.MENSAJE]
+        ["Invitados", datos.INVITADOS], ["Paquete", form.getAttribute("data-paquete")], ["Mensaje", datos.MENSAJE]
       ].filter(function (p) { return p[1]; }).map(function (p) {
         return encodeURIComponent(p[0] + ": " + p[1]);
       }).join("%0A");
