@@ -1,0 +1,4 @@
+# Doblebeat Studio: el editor local y sus copias de seguridad nunca se publican
+_admin_studio/
+_backups/
+INICIAR_EDITOR.bat
