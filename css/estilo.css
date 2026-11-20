@@ -942,8 +942,6 @@ dialog.captura .cerrar { position: absolute; top: 6px; right: 6px; width: 38px; 
 h2 .rosa, h3 .rosa, .opiniones h2 .rosa, .llamada h2 .rosa { color: inherit; }
 /* WhatsApp visible en ordenador; en el móvil ya está en la barra inferior */
 @media (max-width: 860px) { .solo-escritorio { display: none !important; } }
-/* Cabecera del móvil: foto nítida en lugar del vídeo */
-.portada-movil img { display: block; width: 100%; height: auto; aspect-ratio: 2 / 1; object-fit: cover; }
 /* Portátiles bajos (p. ej. 1366 × 768): la cabecera entera en la primera pantalla */
 @media (min-width: 861px) and (max-height: 780px) {
   .portada { padding-top: 16px; }
