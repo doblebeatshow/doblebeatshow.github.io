@@ -130,6 +130,15 @@
     }
   });
 
+  // Comparativa de paquetes: plegada en móvil, siempre abierta en pantallas grandes
+  var comparar = document.querySelector("details.comparar");
+  if (comparar && window.matchMedia) {
+    var movilComparar = window.matchMedia("(max-width: 620px)");
+    var ajustarComparar = function () { comparar.open = !movilComparar.matches; };
+    ajustarComparar();
+    if (movilComparar.addEventListener) movilComparar.addEventListener("change", ajustarComparar);
+  }
+
   // Vídeos automáticos: tras cargar la página, con pausa, y nunca con ahorro de datos o movimiento reducido
   var conexion = navigator.connection || {};
   var ahorro = conexion.saveData || /(^|-)2g$/.test(conexion.effectiveType || "");
@@ -265,10 +274,14 @@
       visibles.forEach(function (f, i) {
         var fig = document.createElement("figure");
         var img = document.createElement("img");
-        img.src = ruta(f.src);
-        img.alt = f.alt || "";
+        // «lazy» antes de «src»: si no, el navegador ya ha pedido la foto y la descarga diferida no actúa
         img.loading = "lazy";
         img.decoding = "async";
+        img.alt = f.alt || "";
+        var marcar = function () { img.classList.add("cargada"); };
+        img.addEventListener("load", marcar);
+        img.addEventListener("error", marcar);
+        img.src = ruta(f.src);
         fig.appendChild(img);
         fig.tabIndex = 0;
         fig.setAttribute("role", "button");
