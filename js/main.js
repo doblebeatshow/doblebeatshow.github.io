@@ -138,22 +138,34 @@
     document.querySelectorAll("video.video-auto[data-src]").forEach(function (v) {
       if (!v.offsetParent) return;
       v.src = v.getAttribute("data-src");
-      var intento = v.play();
-      if (intento && intento.catch) intento.catch(function () {});
 
       var pausadoAMano = false;
       var boton = document.createElement("button");
       boton.type = "button";
       boton.className = "video-pausa";
+      // El botón refleja siempre el estado real: si el sistema bloquea la reproducción automática
+      // (p. ej. modo de bajo consumo del iPhone), muestra «reproducir» para arrancarlo con un toque
+      var pintar = function () {
+        boton.setAttribute("aria-label", v.paused ? "Reproducir el vídeo" : "Pausar el vídeo");
+        boton.innerHTML = v.paused ? ICONO_PLAY : ICONO_PAUSA;
+      };
+      boton.addEventListener("click", function () {
+        if (v.paused) {
+          pausadoAMano = false;
+          var q = v.play();
+          if (q && q.catch) q.catch(pintar);
+        } else {
+          pausadoAMano = true;
+          v.pause();
+        }
+      });
+      v.addEventListener("play", pintar);
+      v.addEventListener("pause", pintar);
+      v.parentNode.appendChild(boton);
       boton.setAttribute("aria-label", "Pausar el vídeo");
       boton.innerHTML = ICONO_PAUSA;
-      boton.addEventListener("click", function () {
-        pausadoAMano = !v.paused;
-        if (v.paused) v.play(); else v.pause();
-        boton.setAttribute("aria-label", pausadoAMano ? "Reproducir el vídeo" : "Pausar el vídeo");
-        boton.innerHTML = pausadoAMano ? ICONO_PLAY : ICONO_PAUSA;
-      });
-      v.parentNode.appendChild(boton);
+      var intento = v.play();
+      if (intento && intento.catch) intento.catch(pintar);
 
       if ("IntersectionObserver" in window) {
         new IntersectionObserver(function (entradas) {
@@ -410,13 +422,18 @@
       aviso.scrollIntoView({ behavior: reducir ? "auto" : "smooth", block: "nearest" });
     };
 
+    // Un único envío por solicitud: el cierre «enviando» ignora cualquier segundo envío (doble clic, Intro repetido…)
+    var enviando = false;
     form.addEventListener("submit", function (e) {
       e.preventDefault();
+      if (enviando) return;
       if (form.querySelector("[name=web]").value) return;
       if (!form.checkValidity()) {
         form.reportValidity();
         return;
       }
+      enviando = true;
+      boton.disabled = true;
       var d = {};
       new FormData(form).forEach(function (v, k) { d[k] = String(v).trim(); });
       var fechaTxt = d.fecha ? d.fecha.split("-").reverse().join("/") : "";
@@ -444,6 +461,8 @@
       var google = parsearGoogle(cfg.formularioGoogle);
 
       if (!google) {
+        enviando = false;
+        boton.disabled = false;
         window.open(urlWa, "_blank", "noopener");
         mostrar("ok", "<strong>¡Casi listo!</strong> Se ha abierto WhatsApp con tu solicitud. Solo tienes que pulsar enviar. Si no se abre, <a href=\"" + urlWa + "\" target=\"_blank\" rel=\"noopener\">pulsa aquí</a> o llámanos al <a href=\"tel:+34651306185\">651 306 185</a>.");
         return;
@@ -453,13 +472,15 @@
       Object.keys(google.mapa).forEach(function (token) {
         if (datos[token] !== undefined) cuerpo.append(google.mapa[token], datos[token] || "-");
       });
-      boton.disabled = true;
       boton.textContent = "Enviando…";
       form.setAttribute("aria-busy", "true");
+      var enviado = false;
       fetch(google.accion, { method: "POST", mode: "no-cors", body: cuerpo })
         .then(function () {
+          enviado = true;
           form.reset();
           preseleccionar();
+          boton.textContent = "Solicitud enviada";
           mostrar("ok", "<strong>¡Solicitud recibida!</strong> Te contestamos en menos de 24 horas. Si tienes prisa, <a href=\"" + urlWa + "\" target=\"_blank\" rel=\"noopener\">escríbenos por WhatsApp</a>.");
           if (window.dataLayer) window.dataLayer.push({ event: "generate_lead" });
         })
@@ -467,9 +488,13 @@
           mostrar("error", "No se ha podido enviar. <a href=\"" + urlWa + "\" target=\"_blank\" rel=\"noopener\">Envíalo por WhatsApp</a> o llámanos al <a href=\"tel:+34651306185\">651 306 185</a>.");
         })
         .then(function () {
-          boton.disabled = false;
-          boton.textContent = textoBoton;
           form.removeAttribute("aria-busy");
+          // Tras un envío correcto el botón sigue bloqueado unos segundos para que no salga una segunda fila
+          setTimeout(function () {
+            enviando = false;
+            boton.disabled = false;
+            boton.textContent = textoBoton;
+          }, enviado ? 5000 : 0);
         });
     });
   });
