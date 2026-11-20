@@ -64,7 +64,7 @@ h1, h2, h3, .titular {
 h1 { font-size: clamp(2.9rem, 7vw, 5.6rem); }
 h2 { font-size: clamp(2.6rem, 6vw, 4.6rem); }
 h3 { font-size: clamp(1.7rem, 3vw, 2.2rem); }
-.rosa { color: var(--rosa); text-shadow: 0 0 28px var(--rosa-glow); }
+.rosa { color: var(--rosa); }
 p { margin: 0 0 1em; text-wrap: pretty; }
 
 .contenedor { width: 100%; max-width: var(--ancho); margin: 0 auto; padding: 0 20px; }
@@ -149,7 +149,7 @@ p { margin: 0 0 1em; text-wrap: pretty; }
 .portada {
   position: relative;
   overflow: hidden;
-  padding: clamp(48px, 7vw, 96px) 0 clamp(64px, 8vw, 110px);
+  padding: clamp(36px, 3.5vw, 56px) 0 clamp(64px, 8vw, 110px);
 }
 .portada::before {
   content: "";
@@ -170,7 +170,7 @@ p { margin: 0 0 1em; text-wrap: pretty; }
   margin-bottom: .18em;
 }
 .portada .entradilla { font-size: 1.12rem; color: var(--texto); max-width: 560px; }
-.portada .botones { display: flex; flex-wrap: wrap; gap: 14px; margin: 30px 0 12px; }
+.portada .botones { display: flex; flex-wrap: wrap; gap: 14px; margin: 24px 0 12px; }
 .micro { font-size: .82rem; color: var(--suave); margin: 10px 0 26px; }
 .formulario .micro { text-align: center; margin: 12px 0 0; }
 .mas-datos { margin: 6px 0 18px; border: 1px solid var(--linea); border-radius: var(--radio); padding: 0 16px; }
@@ -200,7 +200,7 @@ p { margin: 0 0 1em; text-wrap: pretty; }
 .collage img, .collage video { width: 100%; height: 100%; object-fit: cover; display: block; }
 .collage .c1 { width: 58%; height: 78%; left: 0; top: 4%; transform: rotate(-2deg); z-index: 2; }
 .collage .c2 { width: 46%; height: 56%; right: 0; top: 0; transform: rotate(2deg); }
-.collage .c3 { width: 46%; height: 50%; right: 4%; bottom: 0; transform: rotate(-1deg); z-index: 3; border-color: var(--rosa); box-shadow: 0 24px 50px -18px var(--rosa-glow); }
+.collage .c3 { width: 46%; height: 50%; right: 4%; bottom: 0; transform: rotate(-1deg); z-index: 3; box-shadow: 0 24px 50px -18px rgba(0, 0, 0, .85); }
 .portada-movil { display: none; }
 
 main { overflow-x: clip; }
@@ -281,7 +281,6 @@ main { overflow-x: clip; }
   display: block;
   font: 400 clamp(3rem, 6vw, 4.4rem)/1 "Bebas Neue", Impact, sans-serif;
   color: var(--rosa);
-  text-shadow: 0 0 30px var(--rosa-glow);
 }
 .dato span { color: var(--suave); font-size: .92rem; }
 
@@ -292,14 +291,14 @@ main { overflow-x: clip; }
   content: "";
   position: absolute;
   inset: 18px -18px -18px 18px;
-  border: 2px solid var(--rosa);
+  border: 2px solid var(--linea);
   border-radius: var(--radio);
   z-index: -1;
 }
 .equipo { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 28px; }
 .persona { padding: 22px; border-radius: var(--radio); background: var(--gris); border: 1px solid var(--linea); }
 .persona h3 { margin-bottom: .2em; }
-.persona .rol { color: var(--rosa); font-size: .8rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; display: block; margin-bottom: 10px; }
+.persona .rol { color: var(--rosa); font-size: .88rem; font-weight: 600; display: block; margin-bottom: 8px; }
 .persona p { color: var(--suave); font-size: .95rem; margin: 0; }
 .garantia {
   margin-top: 22px;
@@ -347,7 +346,7 @@ main { overflow-x: clip; }
   display: flex;
   flex-direction: column;
 }
-.paquete.estrella { border-color: var(--rosa); box-shadow: 0 0 0 1px var(--rosa), 0 30px 80px -30px var(--rosa-glow); }
+.paquete.estrella { border-color: var(--rosa); box-shadow: 0 0 0 1px var(--rosa), 0 30px 80px -30px rgba(0, 0, 0, .85); }
 .paquete .etiqueta {
   position: absolute;
   top: -14px;
@@ -356,8 +355,6 @@ main { overflow-x: clip; }
   color: var(--blanco);
   font-size: .74rem;
   font-weight: 700;
-  letter-spacing: .14em;
-  text-transform: uppercase;
   padding: 6px 14px;
   border-radius: 999px;
 }
@@ -383,7 +380,7 @@ main { overflow-x: clip; }
 .momentos img { border-radius: 10px; aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
 .momentos figcaption { font-size: .8rem; color: var(--suave); text-align: center; margin-top: 6px; }
 .nota-pie { text-align: center; color: var(--suave); margin-top: 28px; font-size: .95rem; }
-.nota-pie strong { color: var(--blanco); letter-spacing: .06em; }
+.nota-pie strong { color: var(--blanco); }
 
 .extras { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-top: 44px; }
 .extra { padding: 20px; border-radius: var(--radio); border: 1px dashed #3b3b45; background: rgba(255, 255, 255, .02); }
@@ -412,7 +409,6 @@ main { overflow-x: clip; }
   background: var(--rosa-fondo);
   color: var(--blanco);
   font: 400 1.9rem/1 "Bebas Neue", Impact, sans-serif;
-  box-shadow: 0 0 26px var(--rosa-glow);
 }
 .pasos h3 { font-size: 1.6rem; margin-bottom: .15em; }
 .pasos p { margin: 0; color: var(--suave); }
@@ -474,7 +470,7 @@ dialog.captura { border: 0; padding: 0; background: transparent; max-width: min(
 dialog.captura::backdrop { background: rgba(0, 0, 0, .85); }
 dialog.captura img { display: block; width: 100%; height: auto; border-radius: 12px; }
 dialog.captura .cerrar { position: absolute; top: 6px; right: 6px; width: 38px; height: 38px; border: 0; border-radius: 50%; background: var(--rosa-fondo); color: #fff; font-size: 1.5rem; line-height: 1; cursor: pointer; }
-.aftermovie { max-width: 360px; margin: 0 auto 40px; border-radius: 18px; overflow: hidden; border: 3px solid var(--blanco); box-shadow: 0 0 60px var(--rosa-glow); }
+.aftermovie { max-width: 360px; margin: 0 auto 40px; border-radius: 18px; overflow: hidden; border: 3px solid var(--blanco); box-shadow: 0 30px 70px -24px rgba(0, 0, 0, .85); }
 .aftermovie video { display: block; width: 100%; height: auto; aspect-ratio: 9 / 16; background: #000; }
 
 .filtros { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-bottom: 26px; }
@@ -548,7 +544,7 @@ dialog.captura .cerrar { position: absolute; top: 6px; right: 6px; width: 38px; 
 .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .problemas { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
 .problema { background: var(--gris); border: 1px solid var(--linea); border-top: 3px solid var(--rosa); border-radius: var(--radio); padding: 26px; }
-.problema .dolor { color: var(--rosa); font-weight: 600; font-size: .78rem; text-transform: uppercase; letter-spacing: .1em; }
+.problema .dolor { color: var(--rosa); font-weight: 600; font-size: .88rem; }
 .problema h3 { margin: .35em 0 .4em; }
 .problema p { color: var(--suave); margin: 0; }
 .video.cargado::after { display: none; }
@@ -604,7 +600,7 @@ dialog.captura .cerrar { position: absolute; top: 6px; right: 6px; width: 38px; 
   border-radius: 20px;
   background: var(--rosa-fondo);
   color: var(--blanco);
-  box-shadow: 0 30px 80px -30px var(--rosa-glow);
+  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, .85);
 }
 .tarjeta-contacto :is(h1, h2) { font-size: clamp(2.4rem, 4.5vw, 3.4rem); }
 .tarjeta-contacto a { color: var(--blanco); }
@@ -614,7 +610,7 @@ dialog.captura .cerrar { position: absolute; top: 6px; right: 6px; width: 38px; 
 .via { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid rgba(255, 255, 255, .25); text-decoration: none; }
 .via:last-of-type { border-bottom: 0; }
 .via svg { width: 22px; height: 22px; fill: var(--blanco); flex: none; }
-.via small { display: block; font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; }
+.via small { display: block; font-size: .85rem; }
 .via b { font-size: 1.08rem; }
 .horario { margin: 18px 0 0; font-size: .92rem; }
 .referencias { margin: 14px 0 0; color: var(--texto); }
@@ -632,7 +628,7 @@ dialog.captura .cerrar { position: absolute; top: 6px; right: 6px; width: 38px; 
   font: 400 1rem "Poppins", sans-serif;
   color: var(--blanco);
   background: var(--negro);
-  border: 1px solid #34343d;
+  border: 1px solid #5c5c68;
   border-radius: 10px;
   padding: 13px 14px;
   width: 100%;
@@ -660,7 +656,7 @@ dialog.captura .cerrar { position: absolute; top: 6px; right: 6px; width: 38px; 
 .portada-interior .contenedor { display: grid; grid-template-columns: 1.2fr .8fr; gap: 48px; align-items: center; }
 .portada-interior h1 { font-size: clamp(2.9rem, 6.5vw, 5.4rem); }
 .portada-interior .botones { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 26px; }
-.portada-interior .foto { border-radius: 20px; overflow: hidden; border: 2px solid var(--blanco); box-shadow: 0 30px 70px -24px var(--rosa-glow); }
+.portada-interior .foto { border-radius: 20px; overflow: hidden; border: 2px solid var(--blanco); box-shadow: 0 30px 70px -24px rgba(0, 0, 0, .85); }
 .portada-interior .foto img { aspect-ratio: 4 / 5; object-fit: cover; width: 100%; }
 .migas { font-size: .85rem; color: var(--suave); margin-bottom: 18px; }
 .migas a { color: var(--suave); }
@@ -879,7 +875,7 @@ dialog.captura .cerrar { position: absolute; top: 6px; right: 6px; width: 38px; 
 .legal input { width: 24px; height: 24px; margin-top: 1px; }
 
 /* Shorts verticales 9:16 de la portada: solo cargan YouTube al pulsar */
-.short { position: relative; aspect-ratio: 9 / 16; width: 100%; border-radius: 18px; overflow: hidden; background: #000; box-shadow: 0 30px 70px -24px var(--rosa-glow); }
+.short { position: relative; aspect-ratio: 9 / 16; width: 100%; border-radius: 18px; overflow: hidden; background: #000; box-shadow: 0 30px 70px -24px rgba(0, 0, 0, .85); }
 .short-play { position: absolute; inset: 0; display: block; }
 .short-play img { width: 100%; height: 100%; object-fit: cover; transition: transform 300ms var(--ease-out); }
 .short-play::after { content: ""; position: absolute; left: 50%; top: 50%; width: 72px; height: 72px; margin: -36px 0 0 -36px; border-radius: 50%; background: var(--rosa-fondo) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M8 5v14l11-7z'/%3E%3C/svg%3E") 55% center / 34px no-repeat; box-shadow: 0 10px 30px -8px var(--rosa-glow); transition: transform 160ms var(--ease-out); }
@@ -941,3 +937,15 @@ dialog.captura .cerrar { position: absolute; top: 6px; right: 6px; width: 38px; 
 }
 @media (prefers-reduced-motion: reduce) { .hl-foto img { transition: none; } }
 .efecto img.foco-izq { object-position: 32% 50%; }
+
+/* Auditoría Hallmark: rosa solo en la cabecera principal; los títulos de sección, en un solo color */
+h2 .rosa, h3 .rosa, .opiniones h2 .rosa, .llamada h2 .rosa { color: inherit; }
+/* WhatsApp visible en ordenador; en el móvil ya está en la barra inferior */
+@media (max-width: 860px) { .solo-escritorio { display: none !important; } }
+/* Cabecera del móvil: foto nítida en lugar del vídeo */
+.portada-movil img { display: block; width: 100%; height: auto; aspect-ratio: 2 / 1; object-fit: cover; }
+/* Portátiles bajos (p. ej. 1366 × 768): la cabecera entera en la primera pantalla */
+@media (min-width: 861px) and (max-height: 780px) {
+  .portada { padding-top: 16px; }
+  .portada .botones { margin-top: 18px; }
+}
