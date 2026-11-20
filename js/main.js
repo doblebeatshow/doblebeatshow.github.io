@@ -480,7 +480,7 @@
           enviado = true;
           form.reset();
           preseleccionar();
-          boton.textContent = "Solicitud enviada";
+          boton.textContent = "Solicitud enviada ✓";
           mostrar("ok", "<strong>¡Solicitud recibida!</strong> Te contestamos en menos de 24 horas. Si tienes prisa, <a href=\"" + urlWa + "\" target=\"_blank\" rel=\"noopener\">escríbenos por WhatsApp</a>.");
           if (window.dataLayer) window.dataLayer.push({ event: "generate_lead" });
         })
@@ -489,12 +489,11 @@
         })
         .then(function () {
           form.removeAttribute("aria-busy");
-          // Tras un envío correcto el botón sigue bloqueado unos segundos para que no salga una segunda fila
-          setTimeout(function () {
-            enviando = false;
-            boton.disabled = false;
-            boton.textContent = textoBoton;
-          }, enviado ? 5000 : 0);
+          // Tras un envío correcto el botón queda bloqueado para siempre (hasta recargar la página): nunca sale una segunda fila
+          if (enviado) return;
+          enviando = false;
+          boton.disabled = false;
+          boton.textContent = textoBoton;
         });
     });
   });
