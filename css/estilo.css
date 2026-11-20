@@ -949,3 +949,13 @@ h2 .rosa, h3 .rosa, .opiniones h2 .rosa, .llamada h2 .rosa { color: inherit; }
   .portada { padding-top: 16px; }
   .portada .botones { margin-top: 18px; }
 }
+
+/* Formulario: campos opcionales plegados bajo un desplegable discreto */
+.form-opcionales { margin: 14px 0 4px; }
+.form-opcionales > summary { list-style: none; display: inline-flex; align-items: center; min-height: 44px; padding: 10px 16px; border: 1px solid #5c5c68; border-radius: 10px; color: var(--texto); font-size: .92rem; font-weight: 600; cursor: pointer; user-select: none; transition: border-color 160ms var(--ease-out), color 160ms var(--ease-out); }
+.form-opcionales > summary::-webkit-details-marker { display: none; }
+.form-opcionales > summary:focus-visible { outline: 3px solid var(--rosa-2); outline-offset: 2px; }
+.form-opcionales[open] > summary { margin-bottom: 14px; border-color: var(--rosa); color: var(--blanco); }
+@media (hover: hover) and (pointer: fine) { .form-opcionales > summary:hover { border-color: var(--rosa); color: var(--blanco); } }
+@media (max-width: 620px) { .form-opcionales > summary { display: flex; width: 100%; } }
+@media (prefers-reduced-motion: reduce) { .form-opcionales > summary { transition: none; } }
